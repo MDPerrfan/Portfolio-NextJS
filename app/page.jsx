@@ -1,10 +1,25 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Loader from "./Components/Loader";
 import Hero from "./Components/Hero";
+import About from "./Components/About";
+import StarsBackground from "./Components/StarsBackground";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black lg:px-28">
-      <Hero />
-    </div>
+    <>
+      {loading && <Loader onComplete={() => setLoading(false)} />}
+
+      {!loading && (
+        <div className="flex flex-col min-h-screen items-center justify-center lg:px-28">
+          <StarsBackground />
+          <Hero />
+          <About />
+        </div>
+      )}
+    </>
   );
 }
