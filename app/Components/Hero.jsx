@@ -32,14 +32,14 @@ export default function Hero() {
 
 }, { scope: container });
   return (
-    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-between gap-8 px-8 md:px-12 md:text-4xl text-3xl py-12 '>
+    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-between gap-8 px-8 md:px-12 md:text-4xl text-2xl py-12 '>
       <div className='flex flex-col items-start justify-center w-full '>
         <p className=' font-bold  text-gray-800 dark:text-gray-200'>Hi, There!</p>
-        <p className=' my-5'> I'm <span  className="inline-block ml-4 text-orange-500">
+        <p className=' my-5'> I'm <span  className="inline-block ml-2 text-orange-500">
           {name.split("").map((char, i) => (
             <span
               key={i}
-              className="char inline-block whitespace-pre font-semibold text-4xl md:text-5xl"
+              className="char inline-block whitespace-pre font-semibold text-3xl md:text-5xl"
               style={{ display: 'inline-block' }}
             >
               {char}
