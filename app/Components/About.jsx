@@ -1,50 +1,56 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { GitHubCalendar } from "react-github-calendar";
-
+import React from "react";
 import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
 import { GiAk47 } from "react-icons/gi";
-import { CgCPlusPlus } from "react-icons/cg";
-import { DiBootstrap } from "react-icons/di";
-import {
-    SiTailwindcss,
-    SiFirebase,
-    SiExpress,
-    SiNextdotjs,
-} from "react-icons/si";
-import {
-    DiJavascript1,
-    DiReact,
-    DiNodejs,
-    DiMongodb,
-    DiCss3Full,
-    DiHtml5,
-} from "react-icons/di";
-
 const About = () => {
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => setIsMounted(true), []);
-
-    const skills = [
-        { icon: <DiHtml5 />, name: "HTML5" },
-        { icon: <DiCss3Full />, name: "CSS3" },
-        { icon: <DiBootstrap />, name: "Bootstrap" },
-        { icon: <SiTailwindcss />, name: "Tailwind CSS" },
-        { icon: <SiFirebase />, name: "Firebase" },
-        { icon: <CgCPlusPlus />, name: "C++" },
-        { icon: <DiJavascript1 />, name: "JavaScript" },
-        { icon: <DiNodejs />, name: "Node.js" },
-        { icon: <SiExpress />, name: "Express.js" },
-        { icon: <DiReact />, name: "React" },
-        { icon: <SiNextdotjs />, name: "Next.js" },
-        { icon: <DiMongodb />, name: "MongoDB" },
-    ];
-
     return (
         <div className="flex flex-col items-center justify-center gap-20 px-8 md:px-12 py-4">
+            <div className="flex flex-col items-center text-center">
+                {/* Heading */}
+                <p className="text-2xl md:text-4xl text-center font-semibold  mb-8 tracking-tight">
+                    Be familiar with my
+                    <span className=" md:inline text-orange-500 font-black"> Persona</span>
+                </p>
 
+                {/* Intro Text */}
+                <div className="space-y-4 text-gray-500">
+                    <p className="text-xl md:text-2xl leading-relaxed">
+                        Hi Everyone, I am <span className="text-orange-500 font-semibold">Parves</span> from
+                        <span className="text-orange-500"> Chittagong, Bangladesh.</span>
+                        <br />
+                        I am currently a CS Student at
+                        <span className="text-orange-500 font-semibold ml-1">Port City International University</span>.
+                    </p>
+
+                    <p className="text-xl md:text-2xl">
+                        Beyond coding, I find joy in various activities:
+                    </p>
+
+                    {/* Activities List */}
+                    <ul className="space-y-3 pl-4 text-lg md:text-xl font-medium">
+                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
+                            <GiAk47 className="text-orange-500" /> Gaming
+                        </li>
+                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
+                            <AiOutlineApi className="text-orange-500" /> Tech Exploration
+                        </li>
+                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
+                            <AiTwotoneRocket className="text-orange-500" /> Traveling
+                        </li>
+                    </ul>
+
+                    {/* Quote Section */}
+                    <div className="pt-8 italic">
+                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
+                            "The best thing about a boolean is even if you are wrong, you are only off by a bit."
+                        </p>
+                        <span className="text-sm text-gray-500 dark:text-gray-500 block mt-1">
+                            — Anonymous
+                        </span>
+                    </div>
+                </div>
+            </div>
             {/* ===== HERO / PERSONA ===== */}
             <div className="flex flex-col items-center justify-center text-center space-y-6">
 
@@ -54,52 +60,6 @@ const About = () => {
                         alt="About illustration"
                         className="w-72 md:w-96 object-contain"
                     />
-                </div>
-            </div>
-
-            {/* ===== SKILLS ===== */}
-            <div className="flex flex-col items-center text-center space-y-10 mt-20">
-                <h2 className="text-3xl font-bold">
-                    Developing{" "}
-                    <span className="text-orange-500">Skills in</span>
-                </h2>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 my-8 w-full">
-                    {skills.map((skill, i) => (
-                        <div
-                            key={i}
-                            className="group flex flex-col items-center justify-center w-28 h-28
-                           p-4 rounded-xl shadow hover:shadow-lg hover:cursor-pointer
-                           transition bg-transparent hover:bg-orange-500"
-                        >
-                            <div className="text-5xl text-gray-500 group-hover:text-white transition">
-                                {skill.icon}
-                            </div>
-                            <span className="text-sm mt-2 opacity-0 group-hover:opacity-100 transition">
-                                {skill.name}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* ===== GITHUB CALENDAR ===== */}
-            <div className="flex flex-col items-center justify-center text-center space-y-6">
-                <h2 className="text-3xl font-bold">
-                    GitHub <span className="text-orange-500">Contributions</span>
-                </h2>
-
-                <div className="flex w-1/3 md:w-2/3  lg:w-full items-center justify-center overflow-x-auto">
-                    {isMounted ? (
-                        <GitHubCalendar
-                            username="MDPerrfan"
-                            blockSize={15}
-                            blockMargin={5}
-                            fontSize={14}
-                        />
-                    ) : (
-                        <div className="h-52 w-full max-w-xl bg-gray-200 animate-pulse rounded-lg" />
-                    )}
                 </div>
             </div>
         </div>

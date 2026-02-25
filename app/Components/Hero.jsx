@@ -51,7 +51,7 @@ useGSAP(() => {
   return (
     <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 md:text-5xl lg:text-7xl text-2xl py-12 '>
       <div className='flex flex-col items-start justify-center w-full '>
-        <p className=' font-bold  text-gray-800 dark:text-gray-200'>Hi, There!</p>
+        <p className=' font-bold  '>Hi, There!</p>
         <div className='flex items-center relative'>
           <p className=' my-5'> I'm <span className="inline-block ml-2 text-orange-500">
             {name.split("").map((char, i) => (
@@ -69,7 +69,7 @@ useGSAP(() => {
             ref={hammerRef}
             src="/hammer.png" // Ensure your png is in the public folder
             alt="hammer"
-            className="absolute -right-16 md:-right-24 w-20 md:w-30 md:h-30 z-10"
+            className="absolute -right-16 md:-right-24 w-20 md:w-32 md:h-32 z-10"
             style={{ transformOrigin: "bottom right" }} // Pivots from the handle
           />
         </div>

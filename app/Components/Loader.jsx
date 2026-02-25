@@ -92,7 +92,7 @@ const Count = styled.p`
   position: absolute;
   font-size: 50px;
   color: #fff;
-  transform: translateY(-15px);
+  transform: translateY(-20px);
   font-weight: 500;
 `;
 

@@ -1,27 +1,30 @@
 "use client";
-
-import { useState } from "react";
-import Loader from "./Components/Loader";
-import Hero from "./Components/Hero";
-import About from "./Components/About";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import ThemeToggle from "./Components/ThemeToggle";
 import StarsBackground from "./Components/StarsBackground";
 import DaylightBackground from "./Components/DaylightBackground";
-
+import Hero from "./Components/Hero";
+import About from "./Components/About";
+import Skills from "./Components/Skills";
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const { resolvedTheme } = useTheme(); // 'resolvedTheme' accounts for system settings
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   return (
-    <>
-      {loading && <Loader onComplete={() => setLoading(false)} />}
-
-      {!loading && (
-        <div className="flex flex-col min-h-screen items-center justify-center lg:px-28">
-          {/* <StarsBackground /> */}
-          <DaylightBackground />
-          <Hero />
-          <About />
-        </div>
+    <div className="flex flex-col min-h-screen items-center justify-center lg:px-28  transition-colors duration-500">
+      <ThemeToggle />
+      
+      {/* Conditionally render backgrounds based on theme */}
+      {mounted && (
+        resolvedTheme === "dark" ? <StarsBackground /> : <DaylightBackground />
       )}
-    </>
+
+      <Hero />
+      <About />
+      <Skills />
+    </div>
   );
 }
