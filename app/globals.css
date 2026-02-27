@@ -1,4 +1,8 @@
 @import "tailwindcss";
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     background: transparent;
 }

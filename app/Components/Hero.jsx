@@ -49,7 +49,7 @@ useGSAP(() => {
 
   }, { scope: container });
   return (
-    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 md:text-5xl lg:text-7xl text-2xl py-12 '>
+    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 md:text-5xl lg:text-7xl text-2xl py-12'>
       <div className='flex flex-col items-start justify-center w-full '>
         <p className=' font-bold  '>Hi, There!</p>
         <div className='flex items-center relative'>
