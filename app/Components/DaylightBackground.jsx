@@ -43,44 +43,31 @@ const DaylightBackground = () => {
         });
       }
     };
-
+const pixelSize = 4; // Size of each "pixel" for dithering
     // ===== Draw Sun =====
+    const drawPixelCircle = (centerX, centerY, radius, color) => {
+      ctx.fillStyle = color;
+      for (let y = -radius; y <= radius; y += pixelSize) {
+        for (let x = -radius; x <= radius; x += pixelSize) {
+          if (x * x + y * y <= radius * radius) {
+            ctx.fillRect(
+              Math.floor((centerX + x) / pixelSize) * pixelSize,
+              Math.floor((centerY + y) / pixelSize) * pixelSize,
+              pixelSize,
+              pixelSize
+            );
+          }
+        }
+      }
+    };
+
     const drawSun = () => {
-      // Glow
-      const gradient = ctx.createRadialGradient(
-        sun.x,
-        sun.y,
-        sun.radius,
-        sun.x,
-        sun.y,
-        sun.radius + sun.glow
-      );
-
-      gradient.addColorStop(0, 'rgba(255, 220, 120, 0.9)');
-      gradient.addColorStop(1, 'rgba(255, 220, 120, 0)');
-
-      ctx.beginPath();
-      ctx.fillStyle = gradient;
-      ctx.arc(sun.x, sun.y, sun.radius + sun.glow, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Sun body (3D shading)
-      const sunGradient = ctx.createRadialGradient(
-        sun.x - 15,
-        sun.y - 15,
-        10,
-        sun.x,
-        sun.y,
-        sun.radius
-      );
-
-      sunGradient.addColorStop(0, '#fff8b0');
-      sunGradient.addColorStop(1, '#ffb300');
-
-      ctx.beginPath();
-      ctx.fillStyle = sunGradient;
-      ctx.arc(sun.x, sun.y, sun.radius, 0, Math.PI * 2);
-      ctx.fill();
+      // Outer Glow (Dithered effect)
+      drawPixelCircle(sun.x, sun.y, sun.radius + 16, 'rgba(255, 220, 120, 0.4)');
+      // Main Sun Body
+      drawPixelCircle(sun.x, sun.y, sun.radius, '#ffb300');
+      // Highlight
+      drawPixelCircle(sun.x - 8, sun.y - 8, sun.radius * 0.5, '#fff8b0');
     };
 
     // ===== Draw 3D Cloud =====
