@@ -42,8 +42,8 @@ export default function Skills() {
         {/* ===== SKILLS ===== */}
             <div className="flex flex-col items-center text-center space-y-10 mt-20">
                 <h2 className="text-3xl font-bold">
-                    Developing{" "}
-                    <span className="text-orange-500">Skills in</span>
+                    Tech{" "}
+                    <span className="text-orange-500">Stack</span>
                 </h2>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 my-8 w-full">

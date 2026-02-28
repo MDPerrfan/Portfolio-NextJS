@@ -49,15 +49,15 @@ useGSAP(() => {
 
   }, { scope: container });
   return (
-    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 md:text-5xl lg:text-7xl text-2xl py-12'>
+    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 md:text-6xl lg:text-8xl text-2xl font-bold py-12'>
       <div className='flex flex-col items-start justify-center w-full '>
-        <p className=' font-bold  '>Hi, There!</p>
+        <p className=' px-5 '> Hi,There!</p>
         <div className='flex items-center relative'>
-          <p className=' my-5'> I'm <span className="inline-block ml-2 text-orange-500">
+          <p className=' my-8 px-2'> I'm <span className="inline-block ml-2 text-orange-500">
             {name.split("").map((char, i) => (
               <span
                 key={i}
-                className="char inline-block whitespace-pre font-semibold text-3xl md:text-5xl lg:text-7xl"
+                className="char inline-block whitespace-pre font-bold text-3xl md:text-6xl lg:text-8xl"
                 style={{ display: 'inline-block' }}
               >
                 {char}
@@ -75,7 +75,7 @@ useGSAP(() => {
         </div>
 
         <div className='anim-text overflow-hidden h-12'>
-          <div className="text-gray-600 dark:text-gray-400 font-mono text-2xl">
+          <div className="text-gray-200 dark:text-gray-600 text-xl px-4  md:text-4xl">
             <Typewriter
               options={{
                 strings: ['Web Developer', 'Techie', 'Teacher', 'Ecophile'],

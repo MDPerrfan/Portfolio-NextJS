@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -14,14 +12,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const containerClasses = `
-    fixed left-1/2 -translate-x-1/2 z-50
-    w-[95%] md:w-[70%] lg:w-[50%]
-    flex items-center justify-center
-    transition-all duration-700 ease-in-out
-    border border-white/20 rounded-full
-    backdrop-blur-md shadow-lg
-  `;
+  const containerClasses = `fixed left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-[70%] lg:w-[50%] flex items-center justify-center transition-all duration-700 ease-in-out border border-white/20 rounded-full backdrop-blur-md shadow-lg`;
 
   const positionClasses = isScrolled
     ? "bottom-8 py-3 bg-black/30"
@@ -37,31 +28,31 @@ export default function Navbar() {
       </div>
 
       {/* Nav Links */}
-      <ul className="relative z-10 flex items-center gap-8 text-white font-semibold tracking-wide">
+      <ul className="relative z-10 flex items-center gap-8 text-xl text-gray-800 font-semibold tracking-wide">
         <li>
-          <Link href="/" className="hover:text-orange-400 transition-colors">
+          <a href="/" className="hover:text-orange-400 transition-colors">
             Home
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="/about" className="hover:text-orange-400 transition-colors">
+          <a href="#about" className="hover:text-orange-400 transition-colors">
             About
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="/skills" className="hover:text-orange-400 transition-colors">
+          <a href="#skills" className="hover:text-orange-400 transition-colors">
             Skills
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="/projects" className="hover:text-orange-400 transition-colors">
+          <a href="#projects" className="hover:text-orange-400 transition-colors">
             Projects
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="/contact" className="hover:text-orange-400 transition-colors">
+          <a href="#contact" className="hover:text-orange-400 transition-colors">
             Contact
-          </Link>
+          </a>
         </li>
       </ul>
 

@@ -1,8 +1,35 @@
+/* 1. Imports MUST be at the very top */
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 @import "tailwindcss";
+
+/* 2. Global Smooth Scroll */
+
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    /* Using DotGothic16 as a working alternative to Bitcount */
+    --bitcount-font: "DotGothic16", sans-serif;
+}
+
+
+/* 3. Hide Scrollbar */
+
 ::-webkit-scrollbar {
     display: none;
 }
 
 body {
     background: transparent;
+    font-family: var(--bitcount-font);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bitcount-grid {
+    font-family: var(--bitcount-font);
+    /* Note: font-variation-settings only work if the font is a "Variable" font. 
+       DotGothic16 is not variable, but it gives you that pixel look immediately. */
 }
