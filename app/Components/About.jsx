@@ -1,69 +1,91 @@
 "use client";
 
-import React from "react";
-import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
-import { GiAk47 } from "react-icons/gi";
-const About = () => {
-    return (
-        <div className="flex flex-col items-center justify-center gap-20 px-8 md:px-12 py-4">
-            <div className="flex flex-col items-center text-center">
-                {/* Heading */}
-                <p className="text-2xl md:text-4xl text-center font-semibold  mb-8 tracking-tight">
-                    Be familiar with my
-                    <span className=" md:inline text-orange-500 font-black"> Persona</span>
-                </p>
+import React, { useState, useEffect } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 
-                {/* Intro Text */}
-                <div className="space-y-4 text-gray-500">
-                    <p className="text-xl md:text-2xl leading-relaxed">
-                        Hi Everyone, I am <span className="text-orange-500 font-semibold">Parves</span> from
-                        <span className="text-orange-500"> Chittagong, Bangladesh.</span>
-                        <br />
-                        I am currently a CS Student at
-                        <span className="text-orange-500 font-semibold ml-1">Port City International University</span>.
-                    </p>
+export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-                    <p className="text-xl md:text-2xl">
-                        Beyond coding, I find joy in various activities:
-                    </p>
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                    {/* Activities List */}
-                    <ul className="space-y-3 pl-4 text-lg md:text-xl font-medium">
-                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
-                            <GiAk47 className="text-orange-500" /> Gaming
-                        </li>
-                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
-                            <AiOutlineApi className="text-orange-500" /> Tech Exploration
-                        </li>
-                        <li className="flex items-center gap-3 hover:text-orange-500 transition-colors duration-300">
-                            <AiTwotoneRocket className="text-orange-500" /> Traveling
-                        </li>
-                    </ul>
+  const containerClasses = `
+    fixed left-0 right-0 mx-auto
+    z-50
+    w-[92%] sm:w-[85%] md:w-[70%] lg:w-[50%]
+    max-w-5xl
+    transition-all duration-500 ease-in-out
+    border border-white/20
+    rounded-full
+    backdrop-blur-md
+    shadow-lg
+    overflow-hidden
+  `;
 
-                    {/* Quote Section */}
-                    <div className="pt-8 italic">
-                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
-                            "The best thing about a boolean is even if you are wrong, you are only off by a bit."
-                        </p>
-                        <span className="text-sm text-gray-500 dark:text-gray-500 block mt-1">
-                            — Anonymous
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {/* ===== HERO / PERSONA ===== */}
-            <div className="flex flex-col items-center justify-center text-center space-y-6">
+  const positionClasses = isScrolled
+    ? "bottom-6 py-3 bg-black/40 dark:bg-white/10"
+    : "top-6 py-4 bg-white/20 dark:bg-black/30";
 
-                <div className="flex items-center justify-center w-full">
-                    <img
-                        src="https://res.cloudinary.com/ddbqfnyfc/image/upload/v1747669401/about_e5wvib.png"
-                        alt="About illustration"
-                        className="w-72 md:w-96 object-contain"
-                    />
-                </div>
-            </div>
+  return (
+    <>
+      {/* NAV BAR */}
+      <nav className={`${containerClasses} ${positionClasses}`}>
+        <div className="flex items-center justify-between px-6">
+
+          {/* LEFT: Hamburger (mobile only) */}
+          <button
+            className="md:hidden text-2xl text-gray-800 dark:text-gray-200"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <HiX /> : <HiMenu />}
+          </button>
+
+          {/* CENTER: Logo */}
+          <div className="text-lg font-bold text-gray-800 dark:text-gray-200">
+            MP
+          </div>
+
+          {/* RIGHT: Desktop Links */}
+          <ul className="hidden md:flex items-center gap-8 text-lg font-semibold text-gray-800 dark:text-gray-200">
+            {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
+              <li key={item}>
+                <a
+                  href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-    );
-};
+      </nav>
 
-export default About;
+      {/* MOBILE MENU PANEL */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-md transition-all duration-500 md:hidden ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <div className="flex flex-col items-start justify-center h-full pl-10 gap-10 text-2xl font-semibold text-white">
+          {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
+            <a
+              key={item}
+              href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
+              onClick={() => setIsOpen(false)}
+              className="hover:text-orange-400 transition-colors"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}

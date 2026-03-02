@@ -14,7 +14,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="fixed top-5 right-5 p-3 rounded-full bg-orange-500 text-white shadow-lg hover:scale-110 transition-all z-[100]"
+      className="fixed top-5 right-5 p-3 my-3 rounded-full bg-orange-500 text-white shadow-lg hover:scale-110 transition-all z-[100]"
     >
       {theme === "dark" ? <HiSun size={24} /> : <HiMoon size={24} />}
     </button>

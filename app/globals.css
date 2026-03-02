@@ -33,3 +33,11 @@ body {
     /* Note: font-variation-settings only work if the font is a "Variable" font. 
        DotGothic16 is not variable, but it gives you that pixel look immediately. */
 }
+
+
+/* Ensure the letter stays on top of everything */
+
+.origin-p,
+.target-p {
+    will-change: transform;
+}

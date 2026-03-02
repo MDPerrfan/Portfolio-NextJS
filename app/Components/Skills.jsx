@@ -38,7 +38,7 @@ export default function Skills() {
         { icon: <DiMongodb />, name: "MongoDB" },
     ];
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div id="skills" className="flex flex-col items-center justify-center">
         {/* ===== SKILLS ===== */}
             <div className="flex flex-col items-center text-center space-y-10 mt-20">
                 <h2 className="text-3xl font-bold">
