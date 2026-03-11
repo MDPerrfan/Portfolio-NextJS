@@ -135,7 +135,7 @@ export default function Footer({ contacts }) {
                   PARVES
                 </span>
                 <span className="text-gray-600 font-black text-xl tracking-[0.2em]">
-                  .DEV
+                  .NET
                 </span>
               </div>
               <p className="text-gray-500 text-[0.72rem] font-bold tracking-wider max-w-xs leading-relaxed">
