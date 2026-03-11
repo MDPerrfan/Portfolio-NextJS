@@ -39,53 +39,53 @@ export default function Home() {
       once: true,
 
       onEnter: () => {
-  const start = origin.getBoundingClientRect();
+        const start = origin.getBoundingClientRect();
 
-  const leaf = origin.cloneNode(true);
-  const computedSize = window.getComputedStyle(origin).fontSize;
-  leaf.style.fontSize = computedSize;
-  leaf.style.position = "fixed";
-  leaf.style.left = start.left + "px";
-  leaf.style.top = start.top + "px";
-  leaf.style.margin = 0;
-  leaf.style.zIndex = 9999;
+        const leaf = origin.cloneNode(true);
+        const computedSize = window.getComputedStyle(origin).fontSize;
+        leaf.style.fontSize = computedSize;
+        leaf.style.position = "fixed";
+        leaf.style.left = start.left + "px";
+        leaf.style.top = start.top + "px";
+        leaf.style.margin = 0;
+        leaf.style.zIndex = 9999;
 
-  layer.appendChild(leaf);
+        layer.appendChild(leaf);
 
-  origin.style.opacity = 0;
-  target.style.opacity = 0;
+        origin.style.opacity = 0;
+        target.style.opacity = 0;
 
-  const tl = gsap.timeline();
+        const tl = gsap.timeline();
 
-  tl.to(leaf, {
-    duration: 2.2,
-    ease: "power1.in",
-    rotation: 720,
-    scale: 0.85,
+        tl.to(leaf, {
+          duration: 2.2,
+          ease: "power1.in",
+          rotation: 720,
+          scale: 0.85,
 
-    onUpdate() {
-      const p = this.progress();
+          onUpdate() {
+            const p = this.progress();
 
-      // ✅ Re-read target position every frame so it accounts for scroll
-      const end = target.getBoundingClientRect();
+            // ✅ Re-read target position every frame so it accounts for scroll
+            const end = target.getBoundingClientRect();
 
-      const deltaX = end.left - start.left;
-      const deltaY = end.top - start.top;
+            const deltaX = end.left - start.left;
+            const deltaY = end.top - start.top;
 
-      gsap.set(leaf, {
-        x: deltaX * p + Math.sin(p * 8) * 40,
-        y: deltaY * p,
-      });
-    },
-  });
+            gsap.set(leaf, {
+              x: deltaX * p + Math.sin(p * 8) * 40,
+              y: deltaY * p,
+            });
+          },
+        });
 
-  tl.call(() => {
-    leaf.remove();
-    target.textContent = "P";
-    target.style.opacity = 1;
-    origin.style.opacity = 1;
-  });
-},
+        tl.call(() => {
+          leaf.remove();
+          target.textContent = "P";
+          target.style.opacity = 1;
+          origin.style.opacity = 1;
+        });
+      },
 
     });
 
@@ -94,7 +94,7 @@ export default function Home() {
   return (
     <div
       ref={mainContainer}
-      className="flex flex-col min-h-screen items-center justify-center lg:px-28 transition-colors duration-500"
+      className="flex flex-col min-h-screen items-center justify-center lg:px-28 transition-colors duration-500 overflow-x-hidden w-full"
     >
       <ThemeToggle />
 

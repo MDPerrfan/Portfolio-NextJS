@@ -19,7 +19,7 @@ export default function Navbar() {
 
   const containerClasses = `
     fixed left-1/2 -translate-x-1/2 z-50
-    w-[40%] md:w-[70%] lg:w-[50%]
+    w-[85%] md:w-[70%] lg:w-[50%]
     flex items-center justify-center
     transition-all duration-700 ease-in-out
     border border-white/20
@@ -73,7 +73,7 @@ export default function Navbar() {
             {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
               <a
                 key={item}
-                href={item === "Home" ? "/" : `#${item.toLowerCase()}`}
+                href={item === "Home" ? "#hero" : `#${item.toLowerCase()}`}
                 onClick={() => setIsOpen(false)}
                 className="hover:text-orange-400 transition-colors"
               >
