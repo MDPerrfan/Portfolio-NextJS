@@ -9,11 +9,11 @@ const About = () => {
       <div className="flex flex-col items-center text-center">
         {/* Heading */}
         <p className="text-2xl md:text-4xl font-semibold mb-8">
-  Be familiar with my {''}
-  <span className="text-orange-500 font-black">
-    <span className="target-p inline-block">P</span>ersona
-  </span>
-</p>
+          Be familiar with my {''}
+          <span className="text-orange-500 font-black">
+            <span className="target-p inline-block opacity-0">P</span>ersona
+          </span>
+        </p>
 
         {/* Intro Text */}
         <div className="space-y-4 ">

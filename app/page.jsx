@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Flip } from "gsap/Flip";
 
 import ThemeToggle from "./Components/ThemeToggle";
 import StarsBackground from "./Components/StarsBackground";
@@ -13,8 +14,9 @@ import Hero from "./Components/Hero";
 import About from "./Components/About";
 import Skills from "./Components/Skills";
 import Navbar from "./Components/Navbar";
+import Projects from "./Components/Projects";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Flip);
 
 export default function Home() {
   const mainContainer = useRef(null);
@@ -23,84 +25,71 @@ export default function Home() {
 
   useEffect(() => setMounted(true), []);
 
-  useGSAP(
-    () => {
-      if (typeof window === "undefined") return;
+  useGSAP(() => {
 
-      const originP = document.querySelector(".origin-p");
-      const targetP = document.querySelector(".target-p");
+    const origin = document.querySelector(".origin-p");
+    const target = document.querySelector(".target-p");
+    const layer = document.querySelector("#leaf-layer");
 
-      if (!originP || !targetP) return;
+    if (!origin || !target || !layer) return;
 
-      // Reset target P hidden
-      gsap.set(targetP, { opacity: 0 });
+    ScrollTrigger.create({
+      trigger: target,
+      start: "top 80%",
+      once: true,
 
-      const getDelta = () => {
-        const start = originP.getBoundingClientRect();
-        const end = targetP.getBoundingClientRect();
-        return {
-          x: end.left - start.left,
-          y: end.top - start.top,
-        };
-      };
+      onEnter: () => {
+  const start = origin.getBoundingClientRect();
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: targetP,
-          start: "top 85%",
-          end: "top 40%",
-          scrub: 1.2,
-        },
+  const leaf = origin.cloneNode(true);
+  const computedSize = window.getComputedStyle(origin).fontSize;
+  leaf.style.fontSize = computedSize;
+  leaf.style.position = "fixed";
+  leaf.style.left = start.left + "px";
+  leaf.style.top = start.top + "px";
+  leaf.style.margin = 0;
+  leaf.style.zIndex = 9999;
+
+  layer.appendChild(leaf);
+
+  origin.style.opacity = 0;
+  target.style.opacity = 0;
+
+  const tl = gsap.timeline();
+
+  tl.to(leaf, {
+    duration: 2.2,
+    ease: "power1.in",
+    rotation: 720,
+    scale: 0.85,
+
+    onUpdate() {
+      const p = this.progress();
+
+      // ✅ Re-read target position every frame so it accounts for scroll
+      const end = target.getBoundingClientRect();
+
+      const deltaX = end.left - start.left;
+      const deltaY = end.top - start.top;
+
+      gsap.set(leaf, {
+        x: deltaX * p + Math.sin(p * 8) * 40,
+        y: deltaY * p,
       });
-
-      const delta = getDelta();
-
-      // --- PHASE 1: Anticipation (slight unstable move)
-      tl.to(originP, {
-        rotation: -20,
-        y: 20,
-        duration: 0.2,
-        ease: "power1.inOut",
-      });
-
-      // --- PHASE 2: Leaf fall with side wiggle
-      tl.to(originP, {
-        duration: 1,
-        ease: "none",
-        rotation: 720,
-        scale: 0.7,
-        onUpdate: function () {
-          const progress = this.progress();
-
-          gsap.set(originP, {
-            x: delta.x * progress + Math.sin(progress * 10) * 25,
-            y: delta.y * progress,
-          });
-        },
-      });
-
-      // --- PHASE 3: Hand-off
-      tl.to(originP, {
-        opacity: 0,
-        duration: 0.15,
-      }).to(
-        targetP,
-        {
-          opacity: 1,
-          duration: 0.15,
-        },
-        "<"
-      );
-
-      // Recalculate on resize (important!)
-      window.addEventListener("resize", ScrollTrigger.refresh);
-
-      return () => {
-        window.removeEventListener("resize", ScrollTrigger.refresh);
-      };
     },
-    { scope: mainContainer }
-  );
+  });
+
+  tl.call(() => {
+    leaf.remove();
+    target.textContent = "P";
+    target.style.opacity = 1;
+    origin.style.opacity = 1;
+  });
+},
+
+    });
+
+  }, { scope: mainContainer });
 
   return (
     <div
@@ -110,11 +99,10 @@ export default function Home() {
       <ThemeToggle />
 
       {mounted &&
-        (resolvedTheme === "dark" ? (
-          <StarsBackground />
-        ) : (
-          <DaylightBackground />
-        ))}
+        (resolvedTheme === "dark"
+          ? <StarsBackground />
+          : <DaylightBackground />
+        )}
 
       <Navbar />
       <Hero />
@@ -124,6 +112,7 @@ export default function Home() {
       </div>
 
       <Skills />
-    </div>
+      <Projects />
+      <div id="leaf-layer" className="fixed inset-0 text-orange-500 font-semibold text-4xl pointer-events-none z-9999" />    </div>
   );
 }

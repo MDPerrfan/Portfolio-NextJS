@@ -19,7 +19,7 @@ export default function Hero() {
   }, { scope: container });
 
   return (
-    <div ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 py-12'>
+    <div id='hero' ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 py-12'>
       <div className='flex flex-col items-start justify-center w-full'>
         <p className='px-5 text-2xl md:text-6xl lg:text-8xl font-bold'>
           Hi, There<span className="blink-excl">!</span>
