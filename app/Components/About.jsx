@@ -6,24 +6,22 @@ import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
 import { GiAk47 } from "react-icons/gi";
 const About = () => {
   return (
-    <div id="about" className="flex flex-col items-center justify-center gap-20 px-8 md:px-12 py-4">
+    <div id="about" className="flex flex-col items-center justify-center gap-20 px-6 py-4">
       <div className="flex flex-col items-center text-center">
         {/* Heading */}
         <p className="text-2xl md:text-4xl font-semibold mb-8">
-          Be familiar with my {''}
+           ▸MY {''}
           <span className="text-orange-500 font-black">
-            <span className="target-p inline-block opacity-0">P</span>ersona
+            <span className="target-p inline-block opacity-0">P</span>ERSONA
           </span>
         </p>
 
         {/* Intro Text */}
-        <div className="space-y-4 ">
-          <p className="text-xl md:text-2xl leading-relaxed">
-            Hi Everyone, I am <span className="text-orange-500 font-semibold">Parves</span> from
-            <span className="text-orange-500"> Chittagong, Bangladesh.</span>
-            <br />
-            I am a CS Graduate from{' '}
-            <span className="text-orange-500 font-semibold ml-1">Port City International University</span>.
+        <div className="space-y-4 max-w-6xl">
+          <p className="text-xl md:text-2xl leading-relaxed ">
+            A <span className="text-orange-500 font-black">CS </span>Graduate from{" "}
+            <span className="text-orange-500 font-black">Chittagong, Bangladesh</span>{" "}
+            who turns coffee into code and ideas into full-stack apps.
           </p>
 
           <p className="text-xl md:text-2xl">

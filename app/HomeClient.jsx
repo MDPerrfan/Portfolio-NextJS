@@ -22,7 +22,7 @@ const Projects = dynamic(() => import("./Components/Projects"), { ssr: false });
 const Footer = dynamic(() => import("./Components/Footer"), { ssr: false });
 gsap.registerPlugin(ScrollTrigger, Flip);
 
-export default function HomeClient({ projects,contacts }) {
+export default function HomeClient({ projects, contacts }) {
   const mainContainer = useRef(null);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -105,14 +105,10 @@ export default function HomeClient({ projects,contacts }) {
             ? <StarsBackground />
             : <DaylightBackground />
         )}
-<ThemeToggle />
+        <ThemeToggle />
         <Navbar />
         <Hero />
-
-        <div id="about">
-          <About />
-        </div>
-
+        <About />
         <Skills />
         <Projects projects={projects} />
         <Footer contacts={contacts} />
