@@ -25,7 +25,7 @@ export default function Hero() {
           Hi, There<span className="blink-excl">!</span>
         </p>
 
-        <p className='my-8 px-2  font-bold text-2xl md:text-6xl lg:text-8xl'>
+        <p className='my-5 md:my-8 px-3  font-bold text-2xl md:text-6xl lg:text-8xl'>
           I'm{" "}
           <span className="inline-block ml-2 text-orange-500">
             {name.split("").map((char, i) => (
