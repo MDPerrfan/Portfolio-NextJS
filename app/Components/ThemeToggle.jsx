@@ -133,7 +133,7 @@ export default function ThemeToggle() {
       <style>{`
         .pixel-toggle-frame {
           position: relative;
-          width: 76px;
+          width: 65px;
           height: 34px;
           border-radius: 4px;
           overflow: hidden;

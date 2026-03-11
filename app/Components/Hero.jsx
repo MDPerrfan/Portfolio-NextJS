@@ -21,11 +21,11 @@ export default function Hero() {
   return (
     <div id='hero' ref={container} className='min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 px-8 md:px-12 py-12'>
       <div className='flex flex-col items-start justify-center w-full'>
-        <p className='px-5 text-2xl md:text-6xl lg:text-8xl font-bold'>
+        <p className='px-5 text-4xl md:text-6xl lg:text-8xl font-bold'>
           Hi, There<span className="blink-excl">!</span>
         </p>
 
-        <p className='my-5 md:my-8 px-3  font-bold text-2xl md:text-6xl lg:text-8xl'>
+        <p className='my-5 md:my-8 px-3  font-bold text-3xl md:text-6xl lg:text-8xl'>
           I'm{" "}
           <span className="inline-block ml-2 text-orange-500">
             {name.split("").map((char, i) => (
@@ -40,7 +40,7 @@ export default function Hero() {
         </p>
 
         <div className='overflow-hidden h-12'>
-          <div className="text-gray-400 text-xl px-4 md:text-4xl">
+          <div className="text-gray-400 text-2xl px-4 md:text-4xl">
             <Typewriter
               options={{
                 strings: ['Web Developer', 'Techie', 'Teacher', 'Ecophile'],
