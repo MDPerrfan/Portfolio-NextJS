@@ -83,11 +83,24 @@ export default function Navbar() {
   const animRef = useRef(null);
   const posRef = useRef(0);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+// Replace the existing scroll useEffect with this:
+useEffect(() => {
+  const handleScroll = () => {
+    const footer = document.getElementById("contact");
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      // If footer is visible on screen, go back to top
+      if (footerRect.top < window.innerHeight) {
+        setIsScrolled(false);
+        return;
+      }
+    }
+    setIsScrolled(window.scrollY > 50);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   // Initialize mario under first nav item
   // Map nav items to their section IDs
@@ -190,7 +203,7 @@ export default function Navbar() {
   `;
 
   const positionClasses = isScrolled
-    ? "bottom-8 py-3 bg-black/40 dark:bg-white/10"
+    ? "bottom-8 py-3 bg-black/40 :bg-white/10"
     : "top-8 py-4 bg-white/10";
 
   return (
@@ -229,7 +242,7 @@ export default function Navbar() {
             </div>
 
             {/* Nav links */}
-            <ul className="flex items-center justify-between gap-6 lg:gap-10 text-base lg:text-lg font-semibold tracking-wide px-4 py-1">
+            <ul className="flex items-center justify-evenly gap-6 lg:gap-8 text-base lg:text-lg font-semibold tracking-wide px-4 py-1">
               {NAV_ITEMS.map((item, i) => (
                 <li
                   key={item}

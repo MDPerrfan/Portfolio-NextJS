@@ -100,8 +100,8 @@ export default function Footer({ contacts }) {
   const year = new Date().getFullYear();
 
   // Pull from API data if available, fallback to hardcoded
-  const email = "mdperrfan@gmail.com";
-  const phone = "01815638385";
+    const email = contacts?.email ?? "mdperrfan@gmail.com";
+    const phone = contacts?.whatsapp ?? "01643833176";
   const name  = contacts
     ? `${contacts.firstName ?? ""} ${contacts.lastName ?? ""}`.trim() || "Mohammed Parves"
     : "Mohammed Parves";

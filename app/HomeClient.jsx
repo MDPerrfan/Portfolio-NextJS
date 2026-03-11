@@ -9,6 +9,7 @@ import { Flip } from "gsap/Flip";
 import dynamic from "next/dynamic";
 
 import PageLoader from "./Components/Pageloader";
+import ThemeToggle from "./Components/ThemeToggle";
 
 // Load animated components client-side only to avoid hydration mismatch
 const StarsBackground = dynamic(() => import("./Components/StarsBackground"), { ssr: false });
@@ -96,7 +97,7 @@ export default function HomeClient({ projects,contacts }) {
       {/* Site fades in after loader exits */}
       <div
         ref={mainContainer}
-        className="flex flex-col min-h-screen items-center justify-center lg:px-28 transition-colors duration-500 overflow-x-hidden w-full"
+        className="flex flex-col min-h-screen items-center justify-center transition-colors duration-500 overflow-x-hidden w-full"
         style={{ opacity: siteVisible ? 1 : 0, transition: "opacity 0.6s ease" }}
       >
         {mounted && (
@@ -104,7 +105,7 @@ export default function HomeClient({ projects,contacts }) {
             ? <StarsBackground />
             : <DaylightBackground />
         )}
-
+<ThemeToggle />
         <Navbar />
         <Hero />
 
