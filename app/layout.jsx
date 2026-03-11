@@ -1,5 +1,6 @@
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import AppContextProvider from "./context/AppContext";
 import "./globals.css";
 
 
@@ -21,8 +22,7 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider attribute="class" defaultTheme="system"
           enableSystem>
-          {children}
-        </ThemeProvider>
+          <AppContextProvider>{children}</AppContextProvider>        </ThemeProvider>
       </body>
     </html>
   );
