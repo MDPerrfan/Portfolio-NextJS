@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import StatsCard from "./StatsCard";
 import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
 import { GiAk47 } from "react-icons/gi";
 const About = () => {
@@ -54,15 +55,9 @@ const About = () => {
         </div>
       </div>
       {/* ===== HERO / PERSONA ===== */}
-      <div className="flex flex-col items-center justify-center text-center space-y-6">
 
-        <div className="flex items-center justify-center w-full">
-          <img
-            src="https://res.cloudinary.com/ddbqfnyfc/image/upload/v1747669401/about_e5wvib.png"
-            alt="About illustration"
-            className="w-72 md:w-96 object-contain"
-          />
-        </div>
+      <div className="flex items-center justify-center w-full">
+        <StatsCard />
       </div>
     </div>
   );
