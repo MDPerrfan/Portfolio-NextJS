@@ -5,12 +5,15 @@ async function getProjects() {
   try {
     const res = await fetch(
       "https://devparvesserver.vercel.app/api/portfolio/get-portfolio-data",
-      { cache: "no-store" } 
+      { cache: "no-store" }
     );
 
     if (!res.ok) return [];
     const data = await res.json();
-    return Array.isArray(data?.projects) ? data.projects : [];
+    return {
+      projects: Array.isArray(data.projects) ? data.projects : [],
+      contacts: data.contacts?.[0] ?? null, // first about entry
+    };
   } catch (error) {
     console.error("Failed to fetch projects:", error);
     return [];
@@ -18,11 +21,11 @@ async function getProjects() {
 }
 
 export default async function HomePage() {
-  const projects = await getProjects(); // ✅ SSR fetch
+  const {projects, contacts} = await getProjects(); // ✅ SSR fetch
 
   return (
     <main className="flex flex-col min-h-screen w-full">
-      <HomeClient projects={projects} />
+      <HomeClient projects={projects} contacts={contacts}/>
     </main>
   );
 }

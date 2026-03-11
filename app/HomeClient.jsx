@@ -11,21 +11,21 @@ import dynamic from "next/dynamic";
 import PageLoader from "./Components/Pageloader";
 
 // Load animated components client-side only to avoid hydration mismatch
-const StarsBackground    = dynamic(() => import("./Components/StarsBackground"),    { ssr: false });
+const StarsBackground = dynamic(() => import("./Components/StarsBackground"), { ssr: false });
 const DaylightBackground = dynamic(() => import("./Components/DaylightBackground"), { ssr: false });
-const Hero               = dynamic(() => import("./Components/Hero"),               { ssr: false });
-const About              = dynamic(() => import("./Components/About"),              { ssr: false });
-const Skills             = dynamic(() => import("./Components/Skills"),             { ssr: false });
-const Navbar             = dynamic(() => import("./Components/Navbar"),             { ssr: false });
-const Projects           = dynamic(() => import("./Components/Projects"),           { ssr: false });
-
+const Hero = dynamic(() => import("./Components/Hero"), { ssr: false });
+const About = dynamic(() => import("./Components/About"), { ssr: false });
+const Skills = dynamic(() => import("./Components/Skills"), { ssr: false });
+const Navbar = dynamic(() => import("./Components/Navbar"), { ssr: false });
+const Projects = dynamic(() => import("./Components/Projects"), { ssr: false });
+const Footer = dynamic(() => import("./Components/Footer"), { ssr: false });
 gsap.registerPlugin(ScrollTrigger, Flip);
 
-export default function HomeClient({ projects }) {
+export default function HomeClient({ projects,contacts }) {
   const mainContainer = useRef(null);
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted]         = useState(false);
-  const [loading, setLoading]         = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [siteVisible, setSiteVisible] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -40,7 +40,7 @@ export default function HomeClient({ projects }) {
 
     const origin = document.querySelector(".origin-p");
     const target = document.querySelector(".target-p");
-    const layer  = document.querySelector("#leaf-layer");
+    const layer = document.querySelector("#leaf-layer");
     if (!origin || !target || !layer) return;
 
     ScrollTrigger.create({
@@ -49,15 +49,15 @@ export default function HomeClient({ projects }) {
       once: true,
       onEnter: () => {
         const start = origin.getBoundingClientRect();
-        const leaf  = origin.cloneNode(true);
+        const leaf = origin.cloneNode(true);
         const computedSize = window.getComputedStyle(origin).fontSize;
 
-        leaf.style.fontSize  = computedSize;
-        leaf.style.position  = "fixed";
-        leaf.style.left      = start.left + "px";
-        leaf.style.top       = start.top  + "px";
-        leaf.style.margin    = 0;
-        leaf.style.zIndex    = 9999;
+        leaf.style.fontSize = computedSize;
+        leaf.style.position = "fixed";
+        leaf.style.left = start.left + "px";
+        leaf.style.top = start.top + "px";
+        leaf.style.margin = 0;
+        leaf.style.zIndex = 9999;
 
         layer.appendChild(leaf);
         origin.style.opacity = 0;
@@ -70,17 +70,17 @@ export default function HomeClient({ projects }) {
           rotation: 720,
           scale: 0.85,
           onUpdate() {
-            const p   = this.progress();
+            const p = this.progress();
             const end = target.getBoundingClientRect();
             gsap.set(leaf, {
               x: (end.left - start.left) * p + Math.sin(p * 8) * 40,
-              y: (end.top  - start.top)  * p,
+              y: (end.top - start.top) * p,
             });
           },
         });
         tl.call(() => {
           leaf.remove();
-          target.textContent   = "P";
+          target.textContent = "P";
           target.style.opacity = 1;
           origin.style.opacity = 1;
         });
@@ -114,7 +114,7 @@ export default function HomeClient({ projects }) {
 
         <Skills />
         <Projects projects={projects} />
-
+        <Footer contacts={contacts} />
         <div
           id="leaf-layer"
           className="fixed inset-0 text-orange-500 font-semibold text-4xl pointer-events-none z-[9999]"
