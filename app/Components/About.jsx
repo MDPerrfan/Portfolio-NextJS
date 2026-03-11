@@ -6,7 +6,7 @@ import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
 import { GiAk47 } from "react-icons/gi";
 const About = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-20 px-8 md:px-12 py-4">
+    <div id="about" className="flex flex-col items-center justify-center gap-20 px-8 md:px-12 py-4">
       <div className="flex flex-col items-center text-center">
         {/* Heading */}
         <p className="text-2xl md:text-4xl font-semibold mb-8">
