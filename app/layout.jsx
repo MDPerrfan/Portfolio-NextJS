@@ -40,8 +40,7 @@ export const metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpg
-        ",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Parves — Full Stack Developer Portfolio",
