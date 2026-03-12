@@ -9,19 +9,53 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Parves | Full Stack Developer",
+  metadataBase: new URL("https://parves.net"), // ← CRITICAL: needed for og images to resolve correctly
+  title: {
+    default: "Parves | Full Stack Developer",
+    template: "%s | Parves", // ← if you add more pages, title auto-appends
+  },
   description: "Portfolio of Mohammed Parves — Full Stack MERN Developer from Chittagong, Bangladesh. Specializing in React, Next.js, Node.js and MongoDB.",
-  keywords: ["Mohammed Parves", "Full Stack Developer", "MERN Stack", "React", "Next.js", "Portfolio", "Chittagong"],
-  authors: [{ name: "Mohammed Parves" }],
+  keywords: ["Mohammed Parves", "Full Stack Developer", "MERN Stack", "React", "Next.js", "Node.js", "MongoDB", "Portfolio", "Chittagong", "Bangladesh", "MDPerrfan"],
+  authors: [{ name: "Mohammed Parves", url: "https://parves.net" }],
+  creator: "Mohammed Parves",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   icons: {
-    icon: "/favicon.svg",        // modern browsers
-    shortcut: "/favicon.svg",    // older browsers
-    apple: "/favicon.svg",       // iOS home screen
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
   openGraph: {
     title: "Parves | Full Stack Developer",
-    description: "Full Stack MERN Developer from Chittagong, Bangladesh.",
+    description: "Full Stack MERN Developer from Chittagong, Bangladesh. Specializing in React, Next.js, Node.js and MongoDB.",
     type: "website",
+    url: "https://parves.net",
+    siteName: "Parves Portfolio",
+    locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Parves — Full Stack Developer Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Parves | Full Stack Developer",
+    description: "Full Stack MERN Developer from Chittagong, Bangladesh.",
+    images: ["/og-image.png"],
+    creator: "@mdperrfan", // ← add your twitter handle if you have one
+  },
+  alternates: {
+    canonical: "https://parves.net", // ← tells Google this is the main URL
   },
 };
 
