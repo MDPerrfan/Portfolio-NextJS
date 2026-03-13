@@ -81,30 +81,33 @@ export default function Navbar() {
   const navBarRef = useRef(null);
   const animRef = useRef(null);
   const posRef = useRef(0);
-
-// Replace the existing scroll useEffect with this:
-useEffect(() => {
-  const handleScroll = () => {
-    const footer = document.getElementById("footer");
-    if (footer) {
-      const footerRect = footer.getBoundingClientRect();
-      // If footer is visible on screen, go back to top
-      if (footerRect.top < window.innerHeight) {
-        setIsScrolled(false);
-        return;
+  const jumpSound = useRef(null);
+  
+  // Replace the existing scroll useEffect with this:
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.getElementById("footer");
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        // If footer is visible on screen, go back to top
+        if (footerRect.top < window.innerHeight) {
+          setIsScrolled(false);
+          return;
+        }
       }
-    }
-    setIsScrolled(window.scrollY > 50);
-  };
+      setIsScrolled(window.scrollY > 50);
+    };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
-
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  useEffect(() => {
+    jumpSound.current = new Audio("/mario-jump.mp3");
+    jumpSound.current.volume = 0.4;
+  }, []);
   // Initialize mario under first nav item
   // Map nav items to their section IDs
-  const SECTION_IDS = ["hero", "about", "skills", "projects", "contact","footer"];
-
+  const SECTION_IDS = ["hero", "about", "skills", "projects", "contact"];
   useEffect(() => {
     const observers = [];
 
@@ -116,7 +119,6 @@ useEffect(() => {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              // Only jump if it's a different section
               setActiveIdx(prev => {
                 if (prev !== i) {
                   jumpTo(i, prev); // pass current active as "from"
@@ -157,7 +159,16 @@ useEffect(() => {
     setFacingLeft(toX < fromX);
     setJumping(true);
     setJumpTarget(toIdx);
+    // play jump sound
+    if (jumpSound.current) {
+      jumpSound.current.currentTime = 0;
+      jumpSound.current.play();
 
+      setTimeout(() => {
+        jumpSound.current.pause();
+        jumpSound.current.currentTime = 0;
+      }, 1000);
+    }
     setCoinBursts(prev => ({ ...prev, [fromIdx]: true }));
     setTimeout(() => setCoinBursts(prev => ({ ...prev, [fromIdx]: false })), 500);
 

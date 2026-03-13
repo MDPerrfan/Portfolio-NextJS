@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CgCPlusPlus } from "react-icons/cg";
 import { DiBootstrap } from "react-icons/di";
-import { SiTailwindcss, SiFirebase, SiExpress, SiNextdotjs, SiMongodb, SiPostman, SiJsonwebtokens } from "react-icons/si";
+import { SiTailwindcss, SiFirebase, SiExpress, SiNextdotjs, SiMongodb, SiPostman, SiJsonwebtokens,SiVercel, SiNetlify, SiRender, SiGithubcopilot , SiCloudinary} from "react-icons/si";
 import { DiJavascript1, DiReact, DiNodejs, DiCss3Full, DiHtml5, DiGit } from "react-icons/di";
 import { VscVscode } from "react-icons/vsc";
 import {GitHubCalendar} from "react-github-calendar";
@@ -31,11 +30,13 @@ const SKILL_CATEGORIES = [
     color: "#22d3ee",
     icon: "⚙️",
     skills: [
-      { icon: <DiNodejs />,        name: "Node.js",    xp: 82 },
-      { icon: <SiExpress />,       name: "Express.js", xp: 80 },
+      { icon: <DiNodejs />,        name: "Node.js",    xp: 92 },
+      { icon: <SiExpress />,       name: "Express.js", xp: 90 },
       { icon: <SiMongodb />,       name: "MongoDB",    xp: 78 },
       { icon: <SiJsonwebtokens />, name: "JWT Auth",   xp: 75 },
-      { icon: <SiFirebase />,      name: "Firebase",   xp: 70 },
+      { icon: <SiCloudinary />,   name: "Cloudinary", xp: 80 },
+      { icon: <SiFirebase />,      name: "Firebase",   xp: 60 },
+      
     ],
   },
   {
@@ -46,7 +47,10 @@ const SKILL_CATEGORIES = [
       { icon: <DiGit />,      name: "Git & GitHub", xp: 85 },
       { icon: <SiPostman />,  name: "Postman",      xp: 80 },
       { icon: <VscVscode />,  name: "VS Code",      xp: 92 },
-      { icon: <CgCPlusPlus />,name: "C++",          xp: 65 },
+      { icon: <SiVercel />,   name: "Vercel",       xp: 90 },
+      { icon: <SiNetlify />,  name: "Netlify",      xp: 85 },
+      { icon: <SiRender />,   name: "Render",       xp: 80 },
+      { icon: <SiGithubcopilot />,   name: "GitHub Copilot",       xp: 75 },
     ],
   },
 ];
