@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 
-const DaylightBackground = () => {
+export default function DaylightBackground(){
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -159,4 +159,3 @@ const pixelSize = 4; // Size of each "pixel" for dithering
   );
 };
 
-export default DaylightBackground;

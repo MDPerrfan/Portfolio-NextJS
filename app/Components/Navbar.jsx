@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import ThemeToggle from "./ThemeToggle";
 const NAV_ITEMS = ["Home", "About", "Skills", "Projects", "Contact"];
 
 // Pixel Mario SVG (8-bit style, inline)
@@ -86,7 +85,7 @@ export default function Navbar() {
 // Replace the existing scroll useEffect with this:
 useEffect(() => {
   const handleScroll = () => {
-    const footer = document.getElementById("contact");
+    const footer = document.getElementById("footer");
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
       // If footer is visible on screen, go back to top
@@ -104,7 +103,7 @@ useEffect(() => {
 
   // Initialize mario under first nav item
   // Map nav items to their section IDs
-  const SECTION_IDS = ["hero", "about", "skills", "projects", "contact"];
+  const SECTION_IDS = ["hero", "about", "skills", "projects", "contact","footer"];
 
   useEffect(() => {
     const observers = [];

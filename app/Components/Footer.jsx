@@ -102,7 +102,7 @@ const SOCIAL_LINKS = [
     const name  = about?.name ?? "Mohammed Parves";
 
   return (
-    <footer id="contact" className="w-full mt-10">
+    <footer id="footer" className="w-full mt-10">
 
       {/* Pixel top border strip */}
       <div style={{

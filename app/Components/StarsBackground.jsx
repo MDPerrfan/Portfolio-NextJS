@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 
-const StarsBackground = () => {
+export default function StarsBackground(){
     const canvasRef = useRef(null);
 
     useEffect(() => {
@@ -150,4 +150,3 @@ const StarsBackground = () => {
     );
 };
 
-export default StarsBackground; 

@@ -4,7 +4,11 @@ import React from "react";
 import StatsCard from "./StatsCard";
 import { AiOutlineApi, AiTwotoneRocket } from "react-icons/ai";
 import { GiAk47 } from "react-icons/gi";
-const About = () => {
+const About = ({about}) => {
+  const name     = about?.name        || "Mohammed Parves";
+  const bio      = about?.description || "A CS Graduate from Chittagong, Bangladesh who turns coffee into code and ideas into full-stack apps.";
+  const location = about?.location    || "Chittagong, Bangladesh";
+  const title    = about?.title       || "Full Stack Developer";
   return (
     <div id="about" className="flex flex-col items-center justify-center gap-20 px-6 py-4">
       <div className="flex flex-col items-center text-center">
@@ -52,7 +56,6 @@ const About = () => {
           </div>
         </div>
       </div>
-      {/* ===== HERO / PERSONA ===== */}
 
       <div className="flex items-center justify-center w-full">
         <StatsCard />

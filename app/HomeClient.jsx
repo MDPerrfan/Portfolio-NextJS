@@ -19,6 +19,7 @@ const About = dynamic(() => import("./Components/About"), { ssr: false });
 const Skills = dynamic(() => import("./Components/Skills"), { ssr: false });
 const Navbar = dynamic(() => import("./Components/Navbar"), { ssr: false });
 const Projects = dynamic(() => import("./Components/Projects"), { ssr: false });
+const Contact = dynamic(() => import("./Components/Contact"), { ssr: false });
 const Footer = dynamic(() => import("./Components/Footer"), { ssr: false });
 gsap.registerPlugin(ScrollTrigger, Flip);
 
@@ -111,6 +112,7 @@ export default function HomeClient({ projects, about }) {
         <About about={about} />
         <Skills />
         <Projects projects={projects} />
+        <Contact /> 
         <Footer about={about} />
         <div
           id="leaf-layer"

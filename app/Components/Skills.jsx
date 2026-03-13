@@ -200,8 +200,7 @@ export default function Skills() {
             ))}
           </div>
 
-          {/* Stats row */}
-          <motion.div
+          {/* <motion.div
             className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -228,7 +227,7 @@ export default function Skills() {
                 </span>
               </div>
             ))}
-          </motion.div>
+          </motion.div> */}
         </div>
 
         {/* ── GitHub Calendar ── */}
