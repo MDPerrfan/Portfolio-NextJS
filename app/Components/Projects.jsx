@@ -1,7 +1,5 @@
 "use client";
 
-// Projects is now a pure display component
-// Data arrives as a prop — no fetching, no loading spinner, no useContext
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +19,9 @@ function PixelSpinner() {
 // ─── Project Card ─────────────────────────────────────────────────────────────
 
 function ProjectCard({ item, index }) {
+   const image = item.liveUrl
+    ? `https://api.microlink.io/screenshot?url=${encodeURIComponent(item.liveUrl)}&screenshot=true&meta=false&embed=screenshot.url`
+    : null;
   const [hovered, setHovered]   = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -46,7 +47,7 @@ function ProjectCard({ item, index }) {
           </div>
         )}
         <img
-          src={item.image}
+          src={image}
           alt={item.title}
           className={`w-full h-full object-cover block transition-all duration-300
                       ${hovered ? "scale-105" : "scale-100"}
@@ -84,9 +85,9 @@ function ProjectCard({ item, index }) {
 
       {/* Buttons */}
       <div className="flex gap-3 px-4 pb-4 pt-2">
-        {item.githubLink && (
+        {item.githubUrl && (
           <a
-            href={item.githubLink}
+            href={item.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5
@@ -104,9 +105,9 @@ function ProjectCard({ item, index }) {
             GitHub
           </a>
         )}
-        {item.demoLink && (
+        {item.liveUrl && (
           <a
-            href={item.demoLink}
+            href={item.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-3 py-1.5
@@ -118,7 +119,7 @@ function ProjectCard({ item, index }) {
                        hover:-translate-y-0.5 active:translate-y-px
                        active:shadow-none transition-all duration-100"
           >
-            ▶ Demo
+            ▶ Live
           </a>
         )}
       </div>
@@ -129,6 +130,7 @@ function ProjectCard({ item, index }) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function Projects({ projects = [] }) {
+   
   return (
     <section id="projects" className="w-full min-h-screen px-6 py-20 flex justify-center">
       <div className="w-full max-w-6xl">
@@ -157,7 +159,6 @@ export default function Projects({ projects = [] }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {projects
               .slice()
-              .reverse()
               .map((item, i) => (
                 <ProjectCard key={item._id ?? i} item={item} index={i} />
               ))}

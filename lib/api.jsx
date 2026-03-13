@@ -1,7 +1,3 @@
-// lib/api.js
-// Single source of truth for all API calls
-// Server components use this directly — no useEffect, no loading state
-
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function getProjects() {

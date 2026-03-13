@@ -5,35 +5,7 @@ import { DiGithubBadge } from "react-icons/di";
 import { SiLinkedin, SiHackerrank, SiFacebook } from "react-icons/si";
 import { HiMail, HiPhone } from "react-icons/hi";
 
-// ─── Hardcoded social links — update these anytime ───────────────────────────
-const SOCIAL_LINKS = [
-   {
-      label: "GitHub",
-      href: about?.github || "https://github.com/MDPerrfan",
-      icon: <DiGithubBadge size={22} />,
-      color: "#ffffff",
-    },
-    {
-      label: "LinkedIn",
-      href: about?.linkedin || "https://linkedin.com/in/mdperrfan",
-      icon: <SiLinkedin size={18} />,
-      color: "#0a66c2",
-    },
-  {
-    label: "HackerRank",
-    href: "https://hackerrank.com/mdperrfan",
-    icon: <SiHackerrank size={18} />,
-    color: "#00ea64",
-    hoverBg: "#00ea64",
-  },
-  {
-    label: "Facebook",
-    href: "https://facebook.com/mdperrfan",
-    icon: <SiFacebook size={18} />,
-    color: "#1877f2",
-    hoverBg: "#1877f2",
-  },
-];
+
 
 // ─── Pixel coin decoration ────────────────────────────────────────────────────
 function PixelCoin() {
@@ -96,13 +68,38 @@ function SocialBtn({ link }) {
 // ─── Main Footer ──────────────────────────────────────────────────────────────
 export default function Footer({ about }) {
   const year = new Date().getFullYear();
-
+const SOCIAL_LINKS = [
+   {
+      label: "GitHub",
+      href: about?.github || "https://github.com/MDPerrfan",
+      icon: <DiGithubBadge size={22} />,
+      color: "#ffffff",
+    },
+    {
+      label: "LinkedIn",
+      href: about?.linkedin || "https://linkedin.com/in/mdperrfan",
+      icon: <SiLinkedin size={18} />,
+      color: "#0a66c2",
+    },
+  {
+    label: "HackerRank",
+    href: "https://hackerrank.com/mdperrfan",
+    icon: <SiHackerrank size={18} />,
+    color: "#00ea64",
+    hoverBg: "#00ea64",
+  },
+  {
+    label: "Facebook",
+    href: "https://facebook.com/mdperrfan",
+    icon: <SiFacebook size={18} />,
+    color: "#1877f2",
+    hoverBg: "#1877f2",
+  },
+];
   // Pull from API data if available, fallback to hardcoded
-    const email = about?.email ?? "mdperrfan@gmail.com";
-    const phone = about?.whatsapp ?? "01643833176";
-  const name  = about
-    ? `${about.firstName ?? ""} ${about.lastName ?? ""}`.trim() || "Mohammed Parves"
-    : "Mohammed Parves";
+    const email = about?.email ?? " ";
+    const phone = about?.phone ?? "";
+    const name  = about?.name ?? "Mohammed Parves";
 
   return (
     <footer id="contact" className="w-full mt-10">
