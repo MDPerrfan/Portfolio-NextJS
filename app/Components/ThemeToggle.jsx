@@ -1,6 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 
 // Pixel Sun
 function PixelSun() {
@@ -66,7 +66,13 @@ export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const clickSound = useRef(null);
+  const clickTimeout = useRef(null);
 
+useEffect(() => {
+    clickSound.current = new Audio("/click.mp3");
+    clickSound.current.volume = 0.4;
+  }, []);
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
@@ -74,6 +80,20 @@ export default function ThemeToggle() {
 
   const handleToggle = () => {
     if (animating) return;
+    if (clickSound.current) {
+    clearTimeout(clickTimeout.current);
+
+    clickSound.current.currentTime = 0;
+    clickSound.current.play();
+
+    clickTimeout.current = setTimeout(() => {
+      if (clickSound.current) {
+        clickSound.current.pause();
+        clickSound.current.currentTime = 0;
+      }
+    }, 1000); // 1 second
+  }
+
     setAnimating(true);
     setTheme(isDark ? "light" : "dark");
     setTimeout(() => setAnimating(false), 500);
