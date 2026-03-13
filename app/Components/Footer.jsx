@@ -7,20 +7,18 @@ import { HiMail, HiPhone } from "react-icons/hi";
 
 // ─── Hardcoded social links — update these anytime ───────────────────────────
 const SOCIAL_LINKS = [
-  {
-    label: "GitHub",
-    href: "https://github.com/MDPerrfan",
-    icon: <DiGithubBadge size={22} />,
-    color: "#ffffff",
-    hoverBg: "#333",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/mdperrfan",
-    icon: <SiLinkedin size={18} />,
-    color: "#0a66c2",
-    hoverBg: "#0a66c2",
-  },
+   {
+      label: "GitHub",
+      href: about?.github || "https://github.com/MDPerrfan",
+      icon: <DiGithubBadge size={22} />,
+      color: "#ffffff",
+    },
+    {
+      label: "LinkedIn",
+      href: about?.linkedin || "https://linkedin.com/in/mdperrfan",
+      icon: <SiLinkedin size={18} />,
+      color: "#0a66c2",
+    },
   {
     label: "HackerRank",
     href: "https://hackerrank.com/mdperrfan",
@@ -96,14 +94,14 @@ function SocialBtn({ link }) {
 }
 
 // ─── Main Footer ──────────────────────────────────────────────────────────────
-export default function Footer({ contacts }) {
+export default function Footer({ about }) {
   const year = new Date().getFullYear();
 
   // Pull from API data if available, fallback to hardcoded
-    const email = contacts?.email ?? "mdperrfan@gmail.com";
-    const phone = contacts?.whatsapp ?? "01643833176";
-  const name  = contacts
-    ? `${contacts.firstName ?? ""} ${contacts.lastName ?? ""}`.trim() || "Mohammed Parves"
+    const email = about?.email ?? "mdperrfan@gmail.com";
+    const phone = about?.whatsapp ?? "01643833176";
+  const name  = about
+    ? `${about.firstName ?? ""} ${about.lastName ?? ""}`.trim() || "Mohammed Parves"
     : "Mohammed Parves";
 
   return (
