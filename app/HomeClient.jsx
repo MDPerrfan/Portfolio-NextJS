@@ -21,6 +21,7 @@ const Navbar = dynamic(() => import("./Components/Navbar"), { ssr: false });
 const Projects = dynamic(() => import("./Components/Projects"), { ssr: false });
 const Contact = dynamic(() => import("./Components/Contact"), { ssr: false });
 const Footer = dynamic(() => import("./Components/Footer"), { ssr: false });
+const Services = dynamic(() => import("./Components/Services"), { ssr: false });
 gsap.registerPlugin(ScrollTrigger, Flip);
 
 export default function HomeClient({ projects, about }) {
@@ -111,6 +112,7 @@ export default function HomeClient({ projects, about }) {
         <Hero />
         <About about={about} />
         <Skills />
+        <Services />
         <Projects projects={projects} />
         <Contact /> 
         <Footer about={about} />

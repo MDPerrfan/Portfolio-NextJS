@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-const NAV_ITEMS = ["Home", "About", "Skills", "Projects", "Contact"];
+const NAV_ITEMS = ["Home", "About", "Skills","Services", "Projects", "Contact"];
 
 // Pixel Mario SVG (8-bit style, inline)
 function MarioSprite({ jumping, facingLeft }) {
@@ -107,7 +107,7 @@ export default function Navbar() {
   }, []);
   // Initialize mario under first nav item
   // Map nav items to their section IDs
-  const SECTION_IDS = ["hero", "about", "skills", "projects", "contact"];
+  const SECTION_IDS = ["hero", "about", "skills","services", "projects", "contact"];
   useEffect(() => {
     const observers = [];
 
