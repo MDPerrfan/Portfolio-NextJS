@@ -92,17 +92,13 @@ export default function StatsCard() {
   return (
     <>
       <motion.div
-        className="relative bg-[#0a0a14] rounded-sm overflow-hidden w-full"
-        style={{
-          border: "3px solid #f97316",
-          boxShadow: "6px 6px 0 #111, 8px 8px 0 #f9731644",
-        }}
+        className="relative rounded-sm overflow-hidden max-w-xs"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
       >
         {/* Title bar */}
-        <div className="flex items-center justify-between px-3 py-2 bg-orange-500">
+        {/* <div className="flex items-center justify-between px-3 py-2 bg-orange-500">
           <span className="text-[0.65rem] font-black tracking-[0.2em] text-black">
             CHARACTER STATS
           </span>
@@ -111,16 +107,12 @@ export default function StatsCard() {
             <div className="w-2 h-2 bg-black/30 rounded-sm" />
             <div className="w-2 h-2 bg-black rounded-sm" />
           </div>
-        </div>
-
-        {/* Scanline */}
-        <div className="absolute inset-0 pointer-events-none z-10 scanlines-overlay" />
-
+        </div> */}
         {/* ── Row Body ── */}
-        <div className="flex flex-col sm:flex-row gap-0 divide-y sm:divide-y-0 sm:divide-x divide-[#1e1e2e]">
+        <div className=" flex flex-col items-center justify-center gap-4 p-4">
 
           {/* ── Col 1: Avatar + Identity ── */}
-          <div className="flex flex-col items-center justify-center gap-3 px-5 py-5 flex-shrink-0 sm:w-44">
+          <div className="flex flex-col items-center justify-center gap-3 px-5 py-5 w-full" >
             <div
               className="p-2 bg-[#0e0e1a] rounded-sm avatar-idle"
               style={{ border: "2px solid #333", boxShadow: "3px 3px 0 #111" }}
@@ -139,70 +131,6 @@ export default function StatsCard() {
               <div className="text-[0.55rem] text-orange-500 font-black blink-text mt-1">▶ AVAILABLE</div>
             </div>
           </div>
-
-          {/* ── Col 2: Ability Scores ── */}
-          <div className="flex flex-col justify-center gap-2 px-5 py-5 flex-1">
-            <span className="text-[0.58rem] font-black tracking-[0.2em] text-gray-600 mb-1">
-              ── ABILITY SCORES ──
-            </span>
-            <StatBar label="Frontend"  value={90} color="#f97316" delay={200} />
-            <StatBar label="Backend"   value={80} color="#22d3ee" delay={300} />
-            <StatBar label="Problem★"  value={85} color="#a78bfa" delay={400} />
-            <StatBar label="Testing"   value={75} color="#4ade80" delay={500} />
-            <StatBar label="Git/Tools" value={85} color="#facc15" delay={600} />
-
-            {/* pixel divider */}
-            <div className="pixel-divider my-2" />
-
-            {/* Quick stats */}
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { label: "PROJECTS", value: "10+", color: "#22d3ee" },
-                { label: "CGPA",     value: "3.90", color: "#f97316" },
-                { label: "CERTS",    value: "7",    color: "#a78bfa" },
-              ].map((s) => (
-                <div key={s.label} className="flex flex-col items-center bg-[#0e0e1a] rounded-sm py-1.5 px-1"
-                  style={{ border: "1px solid #1e1e2e" }}>
-                  <span className="font-black text-sm" style={{ color: s.color }}>{s.value}</span>
-                  <span className="text-[0.5rem] text-gray-600 font-bold tracking-wider">{s.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Col 3: Achievements ── */}
-          <div className="flex flex-col justify-center gap-2 px-5 py-5 sm:w-52">
-            <span className="text-[0.58rem] font-black tracking-[0.2em] text-gray-600 mb-1">
-              ── ACHIEVEMENTS ──
-            </span>
-            {[
-              { icon: "🎓", text: "BSc CSE · 3.90/4.00",       color: "#f97316" },
-              { icon: "🏆", text: "7x Verified Certs",          color: "#facc15" },
-              { icon: "🚀", text: "10+ Projects Shipped",       color: "#22d3ee" },
-              { icon: "🔬", text: "API & QA Validated",         color: "#4ade80" },
-              { icon: "🌐", text: "Full-Stack MERN Apps",       color: "#a78bfa" },
-            ].map((a, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-2 px-2 py-1.5 rounded-sm bg-[#0e0e1a]"
-                style={{ border: "1px solid #1e1e2e" }}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 + i * 0.1 }}
-              >
-                <span className="text-sm flex-shrink-0">{a.icon}</span>
-                <span className="text-[0.58rem] font-bold text-gray-400 leading-tight">{a.text}</span>
-                <div className="ml-auto w-1.5 h-1.5 rounded-sm flex-shrink-0" style={{ background: a.color }} />
-              </motion.div>
-            ))}
-
-            <div className="mt-2 text-center">
-              <span className="text-[0.52rem] text-gray-600 font-bold tracking-wider">
-                PRESS START TO HIRE
-              </span>
-            </div>
-          </div>
-
         </div>
       </motion.div>
 

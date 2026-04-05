@@ -240,8 +240,8 @@ export default function DaylightBackground() {
 
       // Sky gradient
       const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      sky.addColorStop(0, '#87ceeb');
-      sky.addColorStop(1, '#dff6ff');
+sky.addColorStop(0, '#62c1e5');  // deeper mid-sky blue
+sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 

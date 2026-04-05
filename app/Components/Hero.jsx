@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import Typewriter from 'typewriter-effect';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import StatsCard from './StatsCard';
 
 export default function Hero() {
   const container = useRef(null);
@@ -51,6 +52,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      {/* <div>
+        <StatsCard />
+      </div> */}
     </div>
   );
 }

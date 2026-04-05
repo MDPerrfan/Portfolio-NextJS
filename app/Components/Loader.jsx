@@ -21,7 +21,7 @@ export default function Loader({ onComplete }) {
   const reveal = () => {
     const t1 = gsap.timeline({
       onComplete: () => {
-        onComplete?.();   // ⭐ notify parent
+        onComplete?.();   
       },
     });
 
