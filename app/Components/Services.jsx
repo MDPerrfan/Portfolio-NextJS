@@ -10,7 +10,7 @@ const SERVICES = [
     index: "01",
     label: "Full-Stack Development",
     tag: "MERN STACK",
-    accent: "#f97316",
+    accent: "#be29ec",
     shortDesc: "End-to-end web apps. Database to UI.",
     desc: "Complete web applications built from scratch — React or Next.js on the front, Node + Express on the back, MongoDB for data. I own the whole stack so nothing gets lost between layers.",
     perks: ["REST API Design", "JWT Auth", "Server Components", "DB Modeling"],
@@ -21,7 +21,7 @@ const SERVICES = [
     index: "02",
     label: "UI / Frontend Engineering",
     tag: "REACT · NEXT.JS",
-    accent: "#7dd3fc",
+    accent: "#ff4d01",
     shortDesc: "Pixel-perfect interfaces. Smooth motion.",
     desc: "Interfaces that feel as good as they look. Tailwind for precision layout, Framer Motion for fluid animation, and obsessive attention to performance and responsiveness across every screen.",
     perks: ["Responsive Design", "Framer Motion", "Dark Mode", "Core Web Vitals"],
@@ -32,7 +32,7 @@ const SERVICES = [
     index: "03",
     label: "Backend & API Architecture",
     tag: "NODE · EXPRESS",
-    accent: "#4ade80",
+    accent: "#700e01",
     shortDesc: "Scalable APIs. Clean architecture.",
     desc: "Production-grade REST APIs with proper structure — controllers, middleware, error handling, rate limiting. Built to scale and easy for other devs to pick up and extend.",
     perks: ["REST APIs", "Middleware Chains", "File Uploads", "Rate Limiting"],
@@ -43,7 +43,7 @@ const SERVICES = [
     index: "04",
     label: "Database Design",
     tag: "MONGODB · ATLAS",
-    accent: "#4ade80",
+    accent: "#319246",
     shortDesc: "Schemas that scale. Data that performs.",
     desc: "MongoDB schema design with Mongoose, indexing strategies, aggregation pipelines, and Atlas cloud deployment. Your data layer built right from day one — no painful migrations later.",
     perks: ["Schema Design", "Aggregations", "Atlas Cloud", "Mongoose ODM"],
@@ -54,7 +54,7 @@ const SERVICES = [
     index: "05",
     label: "Deployment & DevOps",
     tag: "VERCEL · RENDER",
-    accent: "#f5e642",
+    accent: "#eb7d31",
     shortDesc: "Ship fast. Stay live. Zero downtime.",
     desc: "From local to production — CI/CD pipelines, environment variable management, domain configuration and SSL. Apps deployed on Vercel, Railway, and Render with automatic preview builds.",
     perks: ["CI/CD Pipelines", "Preview Deploys", "Env Management", "Domain Config"],
@@ -353,8 +353,58 @@ export default function Services() {
     return () => observer.disconnect();
   }, []);
 
-  const selected = SERVICES[active];
+  // autoplay refs
+  const autoPlayRef = useRef(null);
+  const resumeRef = useRef(null);
+  const AUTO_DELAY = 4000;
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // autoplay logic
+  useEffect(() => {
+    startAutoPlay();
+    return () => stopAutoPlay();
+  }, [active]);
+
+  const startAutoPlay = () => {
+    stopAutoPlay();
+    autoPlayRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % SERVICES.length);
+    }, AUTO_DELAY);
+  };
+
+  const stopAutoPlay = () => {
+    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+  };
+
+  const handleManualSelect = (index) => {
+    stopAutoPlay();
+    setActive(index);
+
+    if (resumeRef.current) clearTimeout(resumeRef.current);
+
+    resumeRef.current = setTimeout(() => {
+      startAutoPlay();
+    }, 6000);
+  };
+
+  useEffect(() => {
+    return () => {
+      stopAutoPlay();
+      if (resumeRef.current) clearTimeout(resumeRef.current);
+    };
+  }, []);
+
+  const selected = SERVICES[active];
   return (
     <section
 
@@ -397,125 +447,79 @@ export default function Services() {
           initial={{ opacity: 0, y: 24 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.15 }}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            background: "transparent",
-            backdropFilter: "blur(12px)",
-            border: "1px solid #1a1a2a",
-            borderRadius: 8,
-            overflow: "hidden",
-            minHeight: 480,
-          }}
-          className="flex-col lg:flex-row"
+          className="flex flex-col backdrop-blur-[12px] border border-[#1a1a2a] rounded-lg overflow-hidden min-h-[480px] shadow-2xl"
         >
-          {/* Left — service list (terminal sidebar) */}
-          <div
-            style={{
-              width: "100%",
-              maxWidth: 420,
-              borderRight: "1px solid #111",
-              display: "flex",
-              flexDirection: "column",
-              flexShrink: 0,
-            }}
-          >
 
-            {/* Sidebar titlebar */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "10px 20px",
-                borderBottom: "1px solid #111",
-                background: "#05050f",
-              }}
-            >
-              <div style={{ display: "flex", gap: 5 }}>
-                {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-                  <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.7 }} />
-                ))}
-              </div>
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.6rem",
-                  color: "#2a2a3a",
-                  marginLeft: 8,
-                  letterSpacing: "0.1em",
-                }}
-              >
-                services.config.js
-              </span>
-            </div>
-
-            {/* Rows */}
-            <div style={{ flex: 1, overflowY: "auto" }}>
-              {SERVICES.map((service, i) => (
-                <ServiceRow
-                  key={service.id}
-                  service={service}
-                  isActive={active === i}
-                  onClick={() => setActive(i)}
-                  visible={visible}
-                  delay={0.1 + i * 0.06}
-                />
+          {/* ── TOP BAR (SHARED) ── */}
+          <div className="flex items-center gap-2 px-5 py-[10px] border-b border-[#111] bg-[#05050f]">
+            <div className="flex gap-1.5">
+              {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+                <div key={c} className="w-[10px] h-[10px] rounded-full opacity-70" style={{ background: c }} />
               ))}
             </div>
+            <span className="ml-2 font-mono text-[0.6rem] tracking-[0.1em] text-[#2a2a3a]">
+              services.config.js
+            </span>
+          </div>
 
-            {/* Bottom status bar */}
-            <div
-              style={{
-                padding: "7px 20px",
-                borderTop: "1px solid #111",
-                background: "#05050f",
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                fontFamily: "monospace",
-                fontSize: "0.55rem",
-              }}
-            >
-              <span style={{ color: selected.accent, opacity: 0.8 }}>●</span>
-              <span>{SERVICES.length} services</span>
-              <span style={{ marginLeft: "auto" }}>UTF-8</span>
+          {/* ── BODY (LEFT + RIGHT) ── */}
+          <div className="flex flex-col lg:flex-row flex-1 min-h-0">
+
+            {/* LEFT */}
+            <div className="w-full lg:max-w-[420px] flex flex-col border-r border-[#111]">
+
+              {/* Rows */}
+              <div className="flex-1 overflow-y-auto">
+                {SERVICES.map((service, i) => (
+                  <ServiceRow
+                    key={service.id}
+                    service={service}
+                    isActive={active === i}
+                    onClick={() => setActive(i)}
+                    visible={visible}
+                    delay={0.1 + i * 0.06}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="hidden md:flex flex-col flex-1 min-w-0 relative">
+
+              {/* File title */}
+              <div className="mx-4 py-2 flex items-center gap-2 font-mono text-[0.68rem] tracking-[0.1em] text-[#2a2a3a] ">
+                <span className="text-[#1a1a2a]">▸</span>
+                <span>{selected.id}.md</span>
+                <span className="ml-auto" style={{ color: selected.accent }}>
+                  {selected.index}/{SERVICES.length}
+                </span>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto relative">
+                <AnimatePresence mode="wait">
+                  <DetailPanel key={selected.id} service={selected} />
+                </AnimatePresence>
+
+                {/* Dot grid */}
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-35"
+                  style={{
+                    backgroundImage: "radial-gradient(circle, #1a1a2a 1px, transparent 1px)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Right — detail view */}
-          <div className="flex flex-col flex-1 min-w-0 relative border-l border-[#111] hidden md:block">
-
-            {/* Top title bar (same height as left) */}
-            <div className="h-[35.3px] border-b border-[#111] bg-[#05050f]" />
-
-            {/* Detail titlebar */}
-            <div className="mx-4 py-2 flex items-center gap-2 font-mono text-[0.68rem] tracking-[0.1em] text-[#2a2a3a]">
-              <span className="text-[#1a1a2a]">▸</span>
-              <span>{selected.id}.md</span>
-              <span className="ml-auto" style={{ color: selected.accent }}>
-                {selected.index}/{SERVICES.length}
-              </span>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto relative">
-              <AnimatePresence mode="wait">
-                <DetailPanel key={selected.id} service={selected} />
-              </AnimatePresence>
-
-              {/* Dot grid background */}
-              <div className="absolute inset-0 pointer-events-none opacity-35 z-0"
-                style={{
-                  backgroundImage: "radial-gradient(circle, #1a1a2a 1px, transparent 1px)",
-                  backgroundSize: "24px 24px",
-                }}
-              />
-            </div>
-
-            {/* Bottom bar (to match left side) */}
-            <div className="h-[28px] border-t border-[#111] bg-[#05050f]" />
+          {/* ── BOTTOM BAR (SHARED) ── */}
+          <div className="flex items-center gap-4 px-5 py-[7px] border-t border-[#111] bg-[#05050f] font-mono text-[0.55rem]">
+            <span style={{ color: selected.accent }} className="opacity-80">●</span>
+            <span>{SERVICES.length} services</span>
+            <span className="ml-auto">UTF-8</span>
           </div>
+
         </motion.div>
       </div>
     </section>
