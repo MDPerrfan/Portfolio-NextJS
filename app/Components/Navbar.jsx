@@ -165,13 +165,21 @@ export default function Navbar() {
     setJumpTarget(toIdx);
     // play jump sound
     if (jumpSound.current && isDesktop()) {
+      jumpSound.current.pause();
       jumpSound.current.currentTime = 0;
-      jumpSound.current.play();
-
-      setTimeout(() => {
-        jumpSound.current.pause();
-        jumpSound.current.currentTime = 0;
-      }, 1000);
+      const playPromise = jumpSound.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setTimeout(() => {
+              jumpSound.current.pause();
+              jumpSound.current.currentTime = 0;
+            }, 1000);
+          })
+          .catch(() => {
+            // Playback was interrupted or browser blocked autoplay — silently ignore
+          });
+      }
     }
     setCoinBursts(prev => ({ ...prev, [fromIdx]: true }));
     setTimeout(() => setCoinBursts(prev => ({ ...prev, [fromIdx]: false })), 500);
