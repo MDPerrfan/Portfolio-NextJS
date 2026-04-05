@@ -82,14 +82,10 @@ function Cursor() {
   }, []);
   return (
     <span
+      className="inline-block w-2 align-middle ml-[2px] rounded-[1px]"
       style={{
-        display: "inline-block",
-        width: 8,
         height: "1em",
         background: on ? "#f97316" : "transparent",
-        marginLeft: 2,
-        verticalAlign: "middle",
-        borderRadius: 1,
       }}
     />
   );
@@ -104,100 +100,69 @@ function DetailPanel({ service }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 16 }}
       transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
-      style={{ height: "100%" }}
+      className="h-full"
     >
-      {/* Top accent bar */}
+      {/* Top accent bar — dynamic color kept via style */}
       <div
-        className=" h-1 mb-4"
-        style={{
-          background: `linear-gradient(90deg, ${service.accent}, transparent)`,
-        }}
+        className="h-1 mb-4"
+        style={{ background: `linear-gradient(90deg, ${service.accent}, transparent)` }}
       />
 
-      {/* Index + label */}
-      <div className="mb-3" >
-        <div
-          className="mx-4"
-          style={{
-            fontSize: "0.8rem",
-            letterSpacing: "0.22em",
-            color: service.accent,
-            marginBottom: 6,
-            fontFamily: "monospace",
-          }}
-        >
-          SERVICE_{service.index}
-        </div>
-        <h3
-          className="mx-4"
-          style={{
-            fontSize: "1.35rem",
-            fontWeight: 800,
-            letterSpacing: "0.02em",
-            lineHeight: 1.2,
-          }}
-        >
-          {service.label}
-        </h3>
-        <span
-          className="mx-4"
-          style={{
-            display: "inline-block",
-            marginTop: 8,
-            fontSize: "0.68rem",
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            color: service.accent,
-            background: `${service.accent}18`,
-            border: `1px solid ${service.accent}44`,
-            borderRadius: 3,
-            padding: "2px 8px",
-          }}
-        >
-          {service.tag}
-        </span>
-      </div>
-
-      {/* Description */}
+      {/* Index */}
       <p
-        className="mx-4"
+        className="mx-4 mb-1.5 font-mono tracking-[0.22em]"
+        style={{ fontSize: "0.88rem", color: service.accent }}
+      >
+        SERVICE_{service.index}
+      </p>
+
+      {/* Label */}
+      <h3 className="mx-4 text-[1.49rem] font-extrabold tracking-tight leading-tight">
+        {service.label}
+      </h3>
+
+      {/* Tag badge — dynamic bg/border kept via style */}
+      <span
+        className="mx-4 mt-2 inline-block font-mono font-bold tracking-[0.18em] rounded-[3px] px-2 py-[2px]"
         style={{
-          fontSize: "0.82rem",
-          lineHeight: 1.75,
-          marginBottom: 28,
-          borderLeft: `2px solid ${service.accent}44`,
-          paddingLeft: 14,
+          fontSize: "0.75rem",
+          color: service.accent,
+          background: `${service.accent}18`,
+          border: `1px solid ${service.accent}44`,
         }}
+      >
+        {service.tag}
+      </span>
+
+      {/* Description — dynamic border-left kept via style */}
+      <p
+        className="mx-4 mt-4 mb-7 text-[0.9rem] leading-[1.75] pl-3.5"
+        style={{ borderLeft: `2px solid ${service.accent}44` }}
       >
         {service.desc}
       </p>
 
-      {/* Capabilities list */}
+      {/* Capabilities */}
       <div className="mb-5 mx-4">
-        <div
-          style={{
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            color: "#444",
-            marginBottom: 12,
-            fontFamily: "monospace",
-          }}
-        >
+        <p className="font-mono tracking-[0.18em] text-[#444] mb-3" style={{ fontSize: "0.64rem" }}>
           CAPABILITIES
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        </p>
+        <div className="flex flex-col gap-2">
           {service.perks.map((perk, i) => (
             <motion.div
               key={perk}
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.07, duration: 0.2 }}
-              style={{ display: "flex", alignItems: "center", gap: 10 }}
+              className="flex items-center gap-2.5"
             >
-              <span style={{ color: service.accent, fontFamily: "monospace", fontSize: "0.7rem" }}>
+              <span
+                className="font-mono text-[0.77rem]"
+                style={{ color: service.accent }}
+              >
                 ▸
               </span>
-              <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.04em" }}>
+              <span className="text-[0.83rem] font-semibold tracking-[0.04em]">
                 {perk}
               </span>
             </motion.div>
@@ -205,23 +170,24 @@ function DetailPanel({ service }) {
         </div>
       </div>
 
-      {/* Stat pill */}
+      {/* Stat pill — dynamic colors kept via style */}
       <div
-        className="mx-4"
+        className="mx-4 inline-flex items-center gap-3 rounded-md px-4 py-2.5"
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 12,
-          background: `${service.accent}10`,
+          background: `${service.accent}30`,
           border: `1px solid ${service.accent}30`,
-          borderRadius: 6,
-          padding: "10px 16px",
         }}
       >
-        <span style={{ fontSize: "0.6rem", letterSpacing: "0.14em", color: "#555", fontFamily: "monospace" }}>
+        <span
+          className="font-mono tracking-[0.14em] text-[#555]"
+          style={{ fontSize: "0.66rem" }}
+        >
           {service.stat.label}
         </span>
-        <span style={{ fontSize: "1rem", fontWeight: 800, color: service.accent }}>
+        <span
+          className="text-[1.1rem] font-extrabold"
+          style={{ color: service.accent }}
+        >
           {service.stat.value}
         </span>
       </div>
@@ -242,92 +208,64 @@ function ServiceRow({ service, isActive, onClick, visible, delay }) {
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="flex items-center gap-4 px-5 py-3.5 cursor-pointer border-b border-[#111] relative transition-[background,border-color] duration-150"
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 16,
-        padding: "14px 20px",
-        cursor: "pointer",
-        borderBottom: "1px solid #111",
-        background: isActive
-          ? `${service.accent}0c`
-          : hovered
-            ? "#0d0d1a"
-            : "transparent",
+        background: isActive ? `${service.accent}0c` : hovered ? "#0d0d1a" : "black/10",
         borderLeft: `3px solid ${isActive ? service.accent : "transparent"}`,
-        transition: "background 0.15s ease, border-color 0.15s ease",
-        position: "relative",
       }}
     >
       {/* Index */}
       <span
+        className="font-mono w-[22px] shrink-0 transition-colors duration-150"
         style={{
-          fontFamily: "monospace",
-          fontSize: "0.62rem",
+          fontSize: "0.68rem",
           color: highlighted ? service.accent : "#2a2a3a",
-          width: 22,
-          flexShrink: 0,
-          transition: "color 0.15s",
         }}
       >
         {service.index}
       </span>
 
       {/* Label + short desc */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
+      <div className="flex-1 min-w-0">
+        <p
+          className="font-bold tracking-[0.04em] truncate transition-colors duration-150"
           style={{
-            fontSize: "0.82rem",
-            fontWeight: 700,
+            fontSize: "0.9rem",
             color: highlighted ? "#fff" : "#666",
-            letterSpacing: "0.04em",
-            transition: "color 0.15s",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
           }}
         >
           {service.label}
-        </div>
-        <div
+        </p>
+        <p
+          className="font-mono mt-0.5 transition-colors duration-150"
           style={{
-            fontSize: "0.62rem",
+            fontSize: "0.68rem",
             color: highlighted ? "#555" : "#2a2a3a",
-            marginTop: 2,
-            fontFamily: "monospace",
-            transition: "color 0.15s",
           }}
         >
           {service.shortDesc}
-        </div>
+        </p>
       </div>
 
       {/* Tag badge */}
       <span
+        className="font-mono font-bold shrink-0 rounded-[3px] px-[7px] py-[2px] transition-[color,border-color] duration-150"
         style={{
-          fontSize: "0.52rem",
-          fontWeight: 700,
+          fontSize: "0.57rem",
           letterSpacing: "0.14em",
           color: highlighted ? service.accent : "#2a2a3a",
           border: `1px solid ${highlighted ? service.accent + "55" : "#1a1a2a"}`,
-          borderRadius: 3,
-          padding: "2px 7px",
-          flexShrink: 0,
-          fontFamily: "monospace",
-          transition: "color 0.15s, border-color 0.15s",
         }}
       >
         {service.tag}
       </span>
 
-      {/* Arrow */}
+      {/* Active arrow */}
       <span
+        className="shrink-0 text-[0.72rem] transition-opacity duration-150"
         style={{
           color: service.accent,
-          fontSize: "0.65rem",
           opacity: isActive ? 1 : 0,
-          transition: "opacity 0.15s",
-          flexShrink: 0,
         }}
       >
         ▶
@@ -341,39 +279,28 @@ export default function Services() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.08 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // autoplay refs
   const autoPlayRef = useRef(null);
   const resumeRef = useRef(null);
   const AUTO_DELAY = 4000;
 
+  // IntersectionObserver
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
+      },
       { threshold: 0.08 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // autoplay logic
-  useEffect(() => {
-    startAutoPlay();
-    return () => stopAutoPlay();
-  }, [active]);
+  // Autoplay
+  const stopAutoPlay = () => {
+    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+  };
 
   const startAutoPlay = () => {
     stopAutoPlay();
@@ -382,19 +309,16 @@ export default function Services() {
     }, AUTO_DELAY);
   };
 
-  const stopAutoPlay = () => {
-    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-  };
+  useEffect(() => {
+    startAutoPlay();
+    return () => stopAutoPlay();
+  }, [active]); // eslint-disable-line
 
   const handleManualSelect = (index) => {
     stopAutoPlay();
     setActive(index);
-
     if (resumeRef.current) clearTimeout(resumeRef.current);
-
-    resumeRef.current = setTimeout(() => {
-      startAutoPlay();
-    }, 6000);
+    resumeRef.current = setTimeout(() => startAutoPlay(), 6000);
   };
 
   useEffect(() => {
@@ -405,12 +329,13 @@ export default function Services() {
   }, []);
 
   const selected = SERVICES[active];
+
   return (
     <section
-
       id="services"
       ref={sectionRef}
-      className="w-full px-4 md:px-8 py-20 flex justify-center">
+      className="w-full px-4 md:px-8 py-20 flex justify-center"
+    >
       <div className="w-full max-w-6xl flex flex-col gap-14">
 
         {/* ── Heading ── */}
@@ -423,21 +348,12 @@ export default function Services() {
           <p className="text-2xl md:text-4xl font-extrabold tracking-widest text-center">
             ▸ WHAT I <span className="text-orange-500">BUILD</span>
           </p>
-          {/* Terminal prompt line */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              justifyContent: "center",
-              fontFamily: "monospace",
-              fontSize: "0.72rem",
-              color: "#333",
-            }}
-          >
-            <span style={{ color: "#4ade80" }}>~/portfolio</span>
-            <span style={{ color: "#555" }}>$</span>
-            <span style={{ color: "#888" }}>ls services/</span>
+
+          {/* Terminal prompt */}
+          <div className="flex items-center justify-center gap-2 font-mono text-[0.79rem] text-[#333]">
+            <span className="text-[#4ade80]">~/portfolio</span>
+            <span className="text-[#555]">$</span>
+            <span className="text-[#888]">ls services/</span>
             <Cursor />
           </div>
         </motion.div>
@@ -447,35 +363,36 @@ export default function Services() {
           initial={{ opacity: 0, y: 24 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="flex flex-col backdrop-blur-[12px] border border-[#1a1a2a] rounded-lg overflow-hidden min-h-[480px] shadow-2xl"
+          className="flex flex-col backdrop-blur-sm border border-[#1a1a2a] rounded-lg overflow-hidden min-h-[480px] shadow-2xl "
         >
-
-          {/* ── TOP BAR (SHARED) ── */}
+          {/* Top bar */}
           <div className="flex items-center gap-2 px-5 py-[10px] border-b border-[#111] bg-[#05050f]">
             <div className="flex gap-1.5">
               {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-                <div key={c} className="w-[10px] h-[10px] rounded-full opacity-70" style={{ background: c }} />
+                <div
+                  key={c}
+                  className="w-[10px] h-[10px] rounded-full opacity-70"
+                  style={{ background: c }}
+                />
               ))}
             </div>
-            <span className="ml-2 font-mono text-[0.6rem] tracking-[0.1em] text-[#2a2a3a]">
+            <span className="ml-2 font-mono text-[0.66rem] tracking-[0.1em] text-[#2a2a3a]">
               services.config.js
             </span>
           </div>
 
-          {/* ── BODY (LEFT + RIGHT) ── */}
+          {/* Body */}
           <div className="flex flex-col lg:flex-row flex-1 min-h-0">
 
-            {/* LEFT */}
+            {/* Left — service list */}
             <div className="w-full lg:max-w-[420px] flex flex-col border-r border-[#111]">
-
-              {/* Rows */}
               <div className="flex-1 overflow-y-auto">
                 {SERVICES.map((service, i) => (
                   <ServiceRow
                     key={service.id}
                     service={service}
                     isActive={active === i}
-                    onClick={() => setActive(i)}
+                    onClick={() => handleManualSelect(i)}
                     visible={visible}
                     delay={0.1 + i * 0.06}
                   />
@@ -483,11 +400,14 @@ export default function Services() {
               </div>
             </div>
 
-            {/* RIGHT */}
+            {/* Right — detail view */}
             <div className="hidden md:flex flex-col flex-1 min-w-0 relative">
 
-              {/* File title */}
-              <div className="mx-4 py-2 flex items-center gap-2 font-mono text-[0.68rem] tracking-[0.1em] text-[#2a2a3a] ">
+              {/* File path bar */}
+              <div
+                className="mx-4 py-2 flex items-center gap-2 font-mono tracking-[0.1em] text-[#2a2a3a]"
+                style={{ fontSize: "0.75rem" }}
+              >
                 <span className="text-[#1a1a2a]">▸</span>
                 <span>{selected.id}.md</span>
                 <span className="ml-auto" style={{ color: selected.accent }}>
@@ -495,31 +415,21 @@ export default function Services() {
                 </span>
               </div>
 
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto relative">
+              {/* Detail content */}
+              <div className="flex-1 overflow-y-auto">
                 <AnimatePresence mode="wait">
                   <DetailPanel key={selected.id} service={selected} />
                 </AnimatePresence>
-
-                {/* Dot grid */}
-                <div
-                  className="absolute inset-0 pointer-events-none opacity-35"
-                  style={{
-                    backgroundImage: "radial-gradient(circle, #1a1a2a 1px, transparent 1px)",
-                    backgroundSize: "24px 24px",
-                  }}
-                />
               </div>
             </div>
           </div>
 
-          {/* ── BOTTOM BAR (SHARED) ── */}
-          <div className="flex items-center gap-4 px-5 py-[7px] border-t border-[#111] bg-[#05050f] font-mono text-[0.55rem]">
-            <span style={{ color: selected.accent }} className="opacity-80">●</span>
+          {/* Bottom status bar */}
+          <div className="flex items-center gap-4 px-5 py-[7px] border-t border-[#111] bg-[#05050f] font-mono text-[0.61rem]">
+            <span className="opacity-80" style={{ color: selected.accent }}>●</span>
             <span>{SERVICES.length} services</span>
             <span className="ml-auto">UTF-8</span>
           </div>
-
         </motion.div>
       </div>
     </section>

@@ -110,7 +110,7 @@ const SOCIAL_LINKS = [
         background: "repeating-linear-gradient(90deg, #f97316 0px, #f97316 8px, transparent 8px, transparent 14px)"
       }} />
 
-      <div className="bg-[#0a0a14] border-t-[3px] border-[#1e1e2e] px-6 py-12">
+      <div className="bg-black/90 border-t-[3px] border-[#1e1e2e] px-6 py-12">
         <div className="max-w-5xl mx-auto flex flex-col gap-10">
 
           {/* ── Top Row ── */}

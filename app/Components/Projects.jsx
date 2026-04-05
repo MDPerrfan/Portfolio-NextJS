@@ -27,12 +27,12 @@ function ProjectCard({ item, index }) {
 
   return (
     <motion.div
-      className="bg-[#0e0e1a] border-[3px] border-[#333] rounded-sm overflow-hidden
+      className="bg-black/30 border-[3px] border-[#333] rounded-sm overflow-hidden
                  flex flex-col cursor-pointer
                  shadow-[4px_4px_0_#111,6px_6px_0_#f97316]
                  hover:shadow-[6px_6px_0_#111,8px_8px_0_#f97316]
                  hover:-translate-x-0.5 hover:-translate-y-0.5
-                 transition-all duration-150"
+                 transition-all duration-150 backdrop-blur-[5px]"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
@@ -78,7 +78,7 @@ function ProjectCard({ item, index }) {
       {/* Info */}
       <div className="px-4 pt-3 pb-2 flex-1">
         <h3 className="text-white font-bold text-base tracking-wide mb-2">{item.title}</h3>
-        <p className="text-gray-500 text-[0.82rem] leading-relaxed line-clamp-3 m-0">
+        <p className="text-sm leading-relaxed line-clamp-3 m-0">
           {item.description}
         </p>
       </div>

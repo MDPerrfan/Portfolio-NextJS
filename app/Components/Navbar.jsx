@@ -217,7 +217,7 @@ export default function Navbar() {
   `;
 
   const positionClasses = isScrolled
-    ? "bottom-8 py-3 bg-black/40 :bg-white/10"
+    ? "bottom-8 py-3 bg-black/20 :bg-white/10"
     : "top-8 py-4 bg-white/10";
 
   return (

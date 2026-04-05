@@ -26,13 +26,13 @@ const CATEGORIES = [
     dimGlow: "rgba(249,115,22,0.08)",
     orbitR: [90, 140, 185],
     skills: [
-      { icon: <DiHtml5 />,       name: "HTML5",        xp: 95, ring: 0 },
-      { icon: <DiCss3Full />,    name: "CSS3",         xp: 90, ring: 0 },
-      { icon: <DiBootstrap />,   name: "Bootstrap",    xp: 80, ring: 1 },
+      { icon: <DiHtml5 />, name: "HTML5", xp: 95, ring: 0 },
+      { icon: <DiCss3Full />, name: "CSS3", xp: 90, ring: 0 },
+      { icon: <DiBootstrap />, name: "Bootstrap", xp: 80, ring: 1 },
       { icon: <SiTailwindcss />, name: "Tailwind CSS", xp: 88, ring: 1 },
-      { icon: <DiJavascript1 />, name: "JavaScript",   xp: 90, ring: 1 },
-      { icon: <DiReact />,       name: "React.js",     xp: 88, ring: 2 },
-      { icon: <SiNextdotjs />,   name: "Next.js",      xp: 80, ring: 2 },
+      { icon: <DiJavascript1 />, name: "JavaScript", xp: 90, ring: 1 },
+      { icon: <DiReact />, name: "React.js", xp: 88, ring: 2 },
+      { icon: <SiNextdotjs />, name: "Next.js", xp: 80, ring: 2 },
     ],
   },
   {
@@ -43,12 +43,12 @@ const CATEGORIES = [
     dimGlow: "rgba(34,211,238,0.08)",
     orbitR: [90, 140, 185],
     skills: [
-      { icon: <DiNodejs />,        name: "Node.js",    xp: 92, ring: 0 },
-      { icon: <SiExpress />,       name: "Express.js", xp: 90, ring: 0 },
-      { icon: <SiMongodb />,       name: "MongoDB",    xp: 78, ring: 1 },
-      { icon: <SiJsonwebtokens />, name: "JWT Auth",   xp: 75, ring: 1 },
-      { icon: <SiCloudinary />,    name: "Cloudinary", xp: 80, ring: 2 },
-      { icon: <SiFirebase />,      name: "Firebase",   xp: 60, ring: 2 },
+      { icon: <DiNodejs />, name: "Node.js", xp: 92, ring: 0 },
+      { icon: <SiExpress />, name: "Express.js", xp: 90, ring: 0 },
+      { icon: <SiMongodb />, name: "MongoDB", xp: 78, ring: 1 },
+      { icon: <SiJsonwebtokens />, name: "JWT Auth", xp: 75, ring: 1 },
+      { icon: <SiCloudinary />, name: "Cloudinary", xp: 80, ring: 2 },
+      { icon: <SiFirebase />, name: "Firebase", xp: 60, ring: 2 },
     ],
   },
   {
@@ -59,12 +59,12 @@ const CATEGORIES = [
     dimGlow: "rgba(167,139,250,0.08)",
     orbitR: [90, 140, 185],
     skills: [
-      { icon: <DiGit />,           name: "Git & GitHub",   xp: 85, ring: 0 },
-      { icon: <SiPostman />,       name: "Postman",        xp: 80, ring: 0 },
-      { icon: <VscVscode />,       name: "VS Code",        xp: 92, ring: 1 },
-      { icon: <SiVercel />,        name: "Vercel",         xp: 90, ring: 1 },
-      { icon: <SiNetlify />,       name: "Netlify",        xp: 85, ring: 2 },
-      { icon: <SiRender />,        name: "Render",         xp: 80, ring: 2 },
+      { icon: <DiGit />, name: "Git & GitHub", xp: 85, ring: 0 },
+      { icon: <SiPostman />, name: "Postman", xp: 80, ring: 0 },
+      { icon: <VscVscode />, name: "VS Code", xp: 92, ring: 1 },
+      { icon: <SiVercel />, name: "Vercel", xp: 90, ring: 1 },
+      { icon: <SiNetlify />, name: "Netlify", xp: 85, ring: 2 },
+      { icon: <SiRender />, name: "Render", xp: 80, ring: 2 },
       { icon: <SiGithubcopilot />, name: "GitHub Copilot", xp: 75, ring: 2 },
     ],
   },
@@ -509,7 +509,7 @@ function SkillListPanel({ category }) {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between mb-1">
-                <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em"}}>
+                <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em" }}>
                   {skill.name}
                 </span>
                 <span style={{ fontSize: "0.62rem", fontWeight: 700, color: category.color, opacity: 0.8 }}>
@@ -541,12 +541,30 @@ function SkillListPanel({ category }) {
 export default function Skills() {
   const [active, setActive] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const sectionRef = useRef(null);
+
   const category = CATEGORIES[active];
 
   useEffect(() => setIsMounted(true), []);
 
+  // AUTO SWITCH LOGIC
+  useEffect(() => {
+    if (paused) return;
+
+    const interval = setInterval(() => {
+      setActive((prev) => (prev + 1) % CATEGORIES.length);
+    }, 4000); // 4 seconds
+
+    return () => clearInterval(interval);
+  }, [paused]);
+
   return (
-    <section id="skills" className="w-full px-4 md:px-8 py-20 flex flex-col items-center">
+    <section
+      ref={sectionRef}
+      id="skills"
+      className="w-full px-4 md:px-8 py-20 flex flex-col items-center"
+    >
       <div className="w-full max-w-6xl flex flex-col items-center gap-20">
 
         {/* Heading */}
@@ -569,6 +587,8 @@ export default function Skills() {
 
           {/* Orbital canvas */}
           <motion.div
+            onMouseEnter={() => setPaused(true)}   // pause on hover
+            onMouseLeave={() => setPaused(false)}  // resume
             className="relative flex-shrink-0 rounded-lg overflow-hidden"
             style={{
               width: "100%",
@@ -576,7 +596,6 @@ export default function Skills() {
               height: 500,
               margin: "0 auto",
             }}
-       
             transition={{ duration: 0.6 }}
           >
             <AnimatePresence mode="wait">
@@ -602,7 +621,7 @@ export default function Skills() {
                   key={cat.id}
                   category={cat}
                   active={active === i}
-                  onClick={() => setActive(i)}
+                  onClick={() => setActive(i)} // still works manually
                 />
               ))}
             </div>
@@ -649,7 +668,6 @@ export default function Skills() {
             </div>
           </div>
         </div>
-
         {/* GitHub Calendar */}
         <div className="w-full flex flex-col items-center gap-6">
           <motion.div

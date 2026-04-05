@@ -12,7 +12,6 @@ const CONTACT_LINKS = [
   { label: "LOCATION", value: "Chittagong, Bangladesh", href: null },
 ];
 
-// Rotating status messages shown in the signal panel
 const STATUS_LINES = [
   "ACCEPTING NEW PROJECTS",
   "OPEN TO COLLABORATION",
@@ -32,11 +31,11 @@ function useTypewriter(text, speed = 38, deps = []) {
       if (i >= text.length) clearInterval(id);
     }, speed);
     return () => clearInterval(id);
-  }, deps); // eslint-disable-line
+  }, deps);
   return displayed;
 }
 
-// ── Blinking cursor ───────────────────────────────────────────────────────────
+// ── Components ────────────────────────────────────────────────────────────────
 function Cursor({ color = "#f97316" }) {
   const [on, setOn] = useState(true);
   useEffect(() => {
@@ -45,29 +44,21 @@ function Cursor({ color = "#f97316" }) {
   }, []);
   return (
     <span
-      style={{
-        display: "inline-block",
-        width: 7,
-        height: "0.85em",
-        background: on ? color : "transparent",
-        verticalAlign: "middle",
-        marginLeft: 1,
-        borderRadius: 1,
-        transition: "background 0.08s",
-      }}
+      className="inline-block w-[8px] h-[0.95em] align-middle ml-1 rounded-sm transition-colors duration-75"
+      style={{ background: on ? color : "transparent" }}
     />
   );
 }
 
-// ── Animated signal bars ──────────────────────────────────────────────────────
 function SignalBars({ color = "#4ade80" }) {
-  const heights = [4, 8, 13, 18, 24];
+  const heights = [5, 10, 15, 20, 28];
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 26 }}>
+    <div className="flex items-end gap-1 h-[30px]">
       {heights.map((h, i) => (
         <motion.div
           key={i}
-          style={{ width: 5, background: color, borderRadius: 1, opacity: 0.9 }}
+          className="w-1.5 rounded-sm opacity-90"
+          style={{ background: color }}
           animate={{ height: [h * 0.5, h, h * 0.7, h] }}
           transition={{
             duration: 1.6,
@@ -81,24 +72,18 @@ function SignalBars({ color = "#4ade80" }) {
   );
 }
 
-// ── Scanline overlay ──────────────────────────────────────────────────────────
 function Scanlines() {
   return (
     <div
+      className="absolute inset-0 pointer-events-none z-[1] rounded-[inherit]"
       style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 1,
         backgroundImage:
           "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)",
-        borderRadius: "inherit",
       }}
     />
   );
 }
 
-// ── Left panel — Signal / info side ──────────────────────────────────────────
 function SignalPanel({ visible }) {
   const [statusIdx, setStatusIdx] = useState(0);
   const [time, setTime] = useState("");
@@ -106,14 +91,7 @@ function SignalPanel({ visible }) {
   useEffect(() => {
     const tick = () => {
       const now = new Date();
-      setTime(
-        now.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-      );
+      setTime(now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }));
     };
     tick();
     const t = setInterval(tick, 1000);
@@ -132,303 +110,118 @@ function SignalPanel({ visible }) {
       initial={{ opacity: 0, x: -32 }}
       animate={visible ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-      style={{
-        position: "relative",
-        flex: "0 0 340px",
-        background: "#06060f",
-        borderRight: "1px solid #1a1a28",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-        padding: "32px 28px",
-        gap: 0,
-      }}
+      className="relative flex-[0_0_340px] bg-[#06060f] border-r border-[#1a1a28] flex flex-col overflow-hidden p-8 gap-0"
     >
       <Scanlines />
 
-      {/* Corner brackets */}
+      {/* Brackets */}
       {[
         { top: 10, left: 10, borderTop: "2px solid #f9731644", borderLeft: "2px solid #f9731644" },
         { top: 10, right: 10, borderTop: "2px solid #f9731644", borderRight: "2px solid #f9731644" },
         { bottom: 10, left: 10, borderBottom: "2px solid #f9731644", borderLeft: "2px solid #f9731644" },
         { bottom: 10, right: 10, borderBottom: "2px solid #f9731644", borderRight: "2px solid #f9731644" },
       ].map((style, i) => (
-        <div key={i} style={{ position: "absolute", width: 16, height: 16, zIndex: 2, ...style }} />
+        <div key={i} className="absolute w-4 h-4 z-[2]" style={style} />
       ))}
 
-      {/* System clock */}
-      <div style={{ zIndex: 2, marginBottom: 32 }}>
-        <div
-                className="text-gray-300"
-
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            marginBottom: 4,
-          }}
-        >
-          SYS.CLOCK
-        </div>
-        <div
-          style={{
-            fontFamily: "monospace",
-            fontSize: "1.5rem",
-            fontWeight: 700,
-            color: "#f97316",
-            letterSpacing: "0.08em",
-            lineHeight: 1,
-          }}
-        >
+      <div className="z-[2] mb-9">
+        <div className="text-gray-300 font-mono text-[0.65rem] tracking-[0.2em] mb-1">SYS.CLOCK</div>
+        <div className="font-mono text-2xl font-bold text-orange-500 tracking-wider leading-none">
           {time || "00:00:00"}
         </div>
       </div>
 
-      {/* Connection status */}
-      <div style={{ zIndex: 2, marginBottom: 28 }}>
-        <div
-          className="text-gray-400"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            marginBottom: 10,
-          }}
-        >
-          CONNECTION STATUS
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+      <div className="z-[2] mb-8">
+        <div className="text-gray-400 font-mono text-[0.65rem] tracking-[0.2em] mb-3">CONNECTION STATUS</div>
+        <div className="flex items-center gap-3 mb-2.5">
           <SignalBars color="#4ade80" />
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-2">
               <motion.div
-                style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80" }}
+                className="w-2 h-2 rounded-full bg-green-400"
                 animate={{ opacity: [1, 0.3, 1] }}
                 transition={{ duration: 1.4, repeat: Infinity }}
               />
-              <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#4ade80", fontFamily: "monospace" }}>
-                ONLINE
-              </span>
+              <span className="text-[0.8rem] font-bold text-green-400 font-mono">ONLINE</span>
             </div>
-            <span style={{ fontSize: "0.6rem", color: "#2a2a3e", fontFamily: "monospace" }}>
-              PING: 12ms
-            </span>
+            <span className="text-[0.65rem] text-[#2a2a3e] font-mono">PING: 12ms</span>
           </div>
         </div>
 
-        {/* Animated status line */}
-        <div
-          style={{
-            background: "#0a0a18",
-            border: "1px solid #1a1a28",
-            borderRadius: 4,
-            padding: "9px 12px",
-            fontFamily: "monospace",
-            fontSize: "0.65rem",
-            color: "#4ade80",
-            letterSpacing: "0.1em",
-            minHeight: 36,
-          }}
-        >
-          <span style={{ color: "#2a2a3e" }}>▸ </span>
+        <div className="bg-[#0a0a18] border border-[#1a1a28] rounded p-2.5 font-mono text-[0.72rem] text-green-400 tracking-wide min-h-[40px]">
+          <span className="text-[#2a2a3e]">▸ </span>
           {statusText}
           <Cursor color="#4ade80" />
         </div>
       </div>
 
-      {/* Divider */}
-      <div
-        style={{
-          height: 1,
-          background: "linear-gradient(90deg, transparent, #1e1e2e, transparent)",
-          marginBottom: 28,
-          zIndex: 2,
-        }}
-      />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#1e1e2e] to-transparent mb-8 z-[2]" />
 
-      {/* Contact links */}
-      <div style={{ zIndex: 2, flex: 1 }}>
-        <div
-          className="text-gray-400"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            marginBottom: 16,
-          }}
-        >
-          CONTACT CHANNELS
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div className="z-[2] flex-1">
+        <div className="text-gray-400 font-mono text-[0.65rem] tracking-[0.2em] mb-4">CONTACT CHANNELS</div>
+        <div className="flex flex-col gap-4">
           {CONTACT_LINKS.map(({ label, value, href }, i) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, x: -12 }}
               animate={visible ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.08, duration: 0.3 }}
-              style={{ display: "flex", flexDirection: "column", gap: 2 }}
+              className="flex flex-col gap-0.5"
             >
-              <span
-                className="text-gray-400"
-
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.52rem",
-                  letterSpacing: "0.16em",
-                }}
-              >
-                {label}
-              </span>
+              <span className="text-gray-400 font-mono text-[0.58rem] tracking-[0.18em]">{label}</span>
               {href ? (
                 <a
-
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    color: "#f97316",
-                    textDecoration: "none",
-                    letterSpacing: "0.03em",
-                    transition: "color 0.15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fb923c")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#f97316")}
+                  className="font-mono text-[0.8rem] text-orange-500 hover:text-orange-400 transition-colors tracking-tight"
                 >
                   {value}
                 </a>
               ) : (
-                <span
-                  className="text-gray-400"
-
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.03em",
-                  }}
-                >
-                  {value}
-                </span>
+                <span className="text-gray-400 font-mono text-[0.8rem] tracking-tight">{value}</span>
               )}
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Response time meter */}
-      <div style={{ zIndex: 2, marginTop: 28 }}>
-        <div
-          className="text-gray-400"
-
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            marginBottom: 10,
-          }}
-        >
-          AVG. RESPONSE TIME
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ display: "flex", gap: 3 }}>
+      <div className="z-[2] mt-8">
+        <div className="text-gray-400 font-mono text-[0.65rem] tracking-[0.2em] mb-3">AVG. RESPONSE TIME</div>
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1">
             {Array.from({ length: 12 }).map((_, i) => (
               <motion.div
                 key={i}
-                style={{
-                  width: 6,
-                  height: 14,
-                  borderRadius: 2,
-                  background: i < 9 ? "#f97316" : "#111",
-                }}
+                className="w-1.5 h-4 rounded-[2px]"
+                style={{ background: i < 9 ? "#f97316" : "#111" }}
                 initial={{ scaleY: 0 }}
                 animate={visible ? { scaleY: 1 } : {}}
                 transition={{ delay: 0.6 + i * 0.04, duration: 0.25 }}
               />
             ))}
           </div>
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.65rem",
-              fontWeight: 700,
-            }}
-          >
-            &lt;24H
-          </span>
+          <span className="font-mono text-[0.72rem] font-bold text-gray-200">&lt;24H</span>
         </div>
       </div>
     </motion.div>
   );
 }
 
-// ── Form field ────────────────────────────────────────────────────────────────
 function Field({ label, prompt, type = "text", value, onChange, placeholder, multiline, error }) {
   const [focused, setFocused] = useState(false);
   const id = `field-${label}`;
 
-  const sharedStyle = {
-    width: "100%",
-    background: focused ? "#0a0a18" : "#070710",
-    color: "#e2e2f0",
-    fontSize: "0.82rem",
-    fontFamily: "monospace",
-    padding: "11px 14px",
-    border: `1px solid ${error ? "#ef444466" : focused ? "#f9731688" : "#1a1a28"}`,
-    borderRadius: 5,
-    outline: "none",
-    transition: "border-color 0.15s, background 0.15s, box-shadow 0.15s",
-    boxShadow: focused
-      ? `0 0 0 3px ${error ? "#ef444420" : "#f9731620"}`
-      : "none",
-    letterSpacing: "0.02em",
-  };
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      {/* Label row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.58rem",
-            color: focused ? "#f97316" : "",
-            letterSpacing: "0.18em",
-            transition: "color 0.15s",
-          }}
-        >
+    <div className="flex flex-col gap-1.5 w-full">
+      <div className="flex items-center gap-2">
+        <span className={`font-mono text-[0.65rem] tracking-[0.2em] transition-colors ${focused ? 'text-orange-500' : 'text-gray-500'}`}>
           {prompt}
         </span>
-        <span
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.65rem",
-            color: focused ? "#f97316aa" : " ",
-            letterSpacing: "0.1em",
-            transition: "color 0.15s",
-          }}
-        >
+        <span className={`font-mono text-[0.72rem] tracking-wider transition-colors ${focused ? 'text-orange-400' : 'text-gray-400'}`}>
           {label}
         </span>
-        {error && (
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.65rem",
-              color: "#ef4444",
-              marginLeft: "auto",
-              letterSpacing: "0.08em",
-            }}
-          >
-            {error}
-          </span>
-        )}
+        {error && <span className="font-mono text-[0.72rem] text-red-500 ml-auto tracking-wider">{error}</span>}
       </div>
 
       {multiline ? (
@@ -440,7 +233,9 @@ function Field({ label, prompt, type = "text", value, onChange, placeholder, mul
           rows={5}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          style={{ ...sharedStyle, resize: "none" }}
+          className={`w-full bg-[#070710] text-[#e2e2f0] font-mono text-[0.9rem] p-3 border rounded-md outline-none transition-all resize-none tracking-tight
+            ${focused ? 'bg-[#0a0a18] border-orange-500/50 ring-4 ring-orange-500/10' : 'border-[#1a1a28]'}
+            ${error ? 'border-red-500/40 ring-red-500/10' : ''}`}
         />
       ) : (
         <input
@@ -451,14 +246,15 @@ function Field({ label, prompt, type = "text", value, onChange, placeholder, mul
           placeholder={placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          style={sharedStyle}
+          className={`w-full bg-[#070710] text-[#e2e2f0] font-mono text-[0.9rem] p-3 border rounded-md outline-none transition-all tracking-tight
+            ${focused ? 'bg-[#0a0a18] border-orange-500/50 ring-4 ring-orange-500/10' : 'border-[#1a1a28]'}
+            ${error ? 'border-red-500/40 ring-red-500/10' : ''}`}
         />
       )}
     </div>
   );
 }
 
-// ── Success screen ────────────────────────────────────────────────────────────
 function SuccessScreen({ onReset }) {
   const msg = useTypewriter("TRANSMISSION RECEIVED. I'LL BE IN TOUCH SOON.", 36, []);
 
@@ -467,86 +263,37 @@ function SuccessScreen({ onReset }) {
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 24,
-        padding: "48px 24px",
-        textAlign: "center",
-      }}
+      className="flex flex-col items-center justify-center gap-7 py-12 px-6 text-center"
     >
-      {/* Animated check ring */}
       <motion.div
-        style={{
-          width: 72,
-          height: 72,
-          borderRadius: "50%",
-          border: "2px solid #4ade80",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
+        className="w-20 h-20 rounded-full border-2 border-green-400 flex items-center justify-center relative"
         initial={{ scale: 0, rotate: -90 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 18 }}
       >
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <motion.path
+            d="M5 13l4 4L19 7"
+            stroke="#4ade80"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          />
+        </svg>
         <motion.div
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-        >
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-            <motion.path
-              d="M5 13l4 4L19 7"
-              stroke="#4ade80"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            />
-          </svg>
-        </motion.div>
-        {/* Orbiting dot */}
-        <motion.div
-          style={{
-            position: "absolute",
-            width: 6,
-            height: 6,
-            borderRadius: "50%",
-            background: "#4ade80",
-          }}
+          className="absolute w-1.5 h-1.5 rounded-full bg-green-400 -top-1 left-1/2 -ml-[3px]"
           animate={{ rotate: 360 }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-          initial={{ top: -3, left: "50%", marginLeft: -3 }}
+          style={{ transformOrigin: "0 43px" }}
         />
       </motion.div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.7rem",
-            color: "#4ade80",
-            letterSpacing: "0.2em",
-          }}
-        >
-          STATUS: 200 OK
-        </div>
-        <div
-          style={{
-            fontFamily: "monospace",
-            fontSize: "0.75rem",
-            color: "#888",
-            letterSpacing: "0.06em",
-            lineHeight: 1.7,
-            maxWidth: 320,
-          }}
-        >
+      <div className="flex flex-col gap-3">
+        <div className="font-mono text-[0.8rem] text-green-400 tracking-[0.2em]">STATUS: 200 OK</div>
+        <div className="font-mono text-[0.85rem] text-gray-400 tracking-wide leading-relaxed max-w-xs">
           {msg}
           <Cursor color="#4ade80" />
         </div>
@@ -554,26 +301,7 @@ function SuccessScreen({ onReset }) {
 
       <button
         onClick={onReset}
-        style={{
-          fontFamily: "monospace",
-          fontSize: "0.6rem",
-          color: "#2a2a3e",
-          letterSpacing: "0.18em",
-          background: "none",
-          border: "1px solid #1a1a28",
-          borderRadius: 4,
-          padding: "7px 16px",
-          cursor: "pointer",
-          transition: "color 0.15s, border-color 0.15s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.color = "#f97316";
-          e.currentTarget.style.borderColor = "#f9731655";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.color = "#2a2a3e";
-          e.currentTarget.style.borderColor = "#1a1a28";
-        }}
+        className="font-mono text-[0.7rem] text-[#2a2a3e] tracking-[0.2em] bg-transparent border border-[#1a1a28] rounded py-2 px-5 hover:text-orange-500 hover:border-orange-500/30 transition-colors"
       >
         ▸ NEW TRANSMISSION
       </button>
@@ -581,7 +309,6 @@ function SuccessScreen({ onReset }) {
   );
 }
 
-// ── Main Contact ──────────────────────────────────────────────────────────────
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
@@ -641,120 +368,43 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="w-full px-4 md:px-8 py-20 flex flex-col items-center"
-    >
-      <div className="w-full max-w-6xl flex flex-col gap-14">
-
-        {/* ── Heading ── */}
+    <section id="contact" ref={sectionRef} className="w-full px-4 md:px-8 py-24 flex flex-col items-center">
+      <div className="w-full max-w-6xl flex flex-col gap-16">
+        
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-2xl md:text-4xl font-extrabold tracking-widest mb-3">
+          <p className="text-3xl md:text-5xl font-black tracking-[0.25em] mb-4">
             ▸ OPEN <span className="text-orange-500">CHANNEL</span>
           </p>
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.7rem",
-              color: "#2a2a3e",
-              letterSpacing: "0.18em",
-            }}
-          >
+          <p className="font-mono text-[0.8rem] text-[#2a2a3e] tracking-[0.2em] uppercase">
             ESTABLISH CONNECTION · SEND TRANSMISSION · AWAIT RESPONSE
           </p>
         </motion.div>
 
-        {/* ── Main terminal panel ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.1 }}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            border: "1px solid #1a1a28",
-            borderRadius: 10,
-            overflow: "hidden",
-            minHeight: 560,
-            position: "relative",
-          }}
-          className="flex-col lg:flex-row bg-black/30"
+          className="flex flex-col lg:flex-row bg-black/30 border border-[#1a1a28] rounded-xl overflow-hidden min-h-[600px] relative"
         >
-          {/* Subtle top gradient line */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 1,
-              background: "linear-gradient(90deg, transparent, #f9731644, #f9731622, transparent)",
-              zIndex: 10,
-            }}
-          />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent z-10" />
 
-          {/* Left — signal panel */}
           <SignalPanel visible={visible} />
 
-          {/* Right — form */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={visible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}
-            style={{
-              flex: 1,
-              padding: "32px 36px",
-              display: "flex",
-              flexDirection: "column",
-              position: "relative",
-              minWidth: 0,
-            }}
+            className="flex-1 p-9 md:p-11 flex flex-col relative min-w-0"
           >
-            {/* Form titlebar */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 28,
-                paddingBottom: 16,
-                borderBottom: "1px solid #111",
-              }}
-            >
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "#f97316",
-                  boxShadow: "0 0 8px #f9731688",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.18em",
-                }}
-              >
-                NEW TRANSMISSION
-              </span>
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.65rem",
-                  marginLeft: "auto",
-                  letterSpacing: "0.1em",
-                }}
-              >
-                ENCRYPTED · TLS 1.3
-              </span>
+            <div className="flex items-center gap-3 mb-8 pb-5 border-b border-[#111]">
+              <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_#f9731688]" />
+              <span className="font-mono text-[0.72rem] tracking-[0.2em] uppercase text-gray-300">NEW TRANSMISSION</span>
+              <span className="font-mono text-[0.72rem] ml-auto tracking-widest text-gray-600">ENCRYPTED · TLS 1.3</span>
             </div>
 
             <AnimatePresence mode="wait">
@@ -766,17 +416,9 @@ export default function Contact() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  style={{ display: "flex", flexDirection: "column", gap: 20, flex: 1 }}
+                  className="flex flex-col gap-6 flex-1"
                 >
-                  {/* Name + Email row */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                    }}
-                    className="grid-cols-1 md:grid-cols-2"
-                  >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <Field
                       label="SENDER_NAME"
                       prompt="01 ▸"
@@ -796,8 +438,7 @@ export default function Contact() {
                     />
                   </div>
 
-                  {/* Message */}
-                  <div style={{ flex: 1 }}>
+                  <div className="flex-1 flex flex-col">
                     <Field
                       label="MESSAGE_BODY"
                       prompt="03 ▸"
@@ -807,41 +448,18 @@ export default function Contact() {
                       multiline
                       error={errors.message}
                     />
-                    {/* Char counter */}
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        marginTop: 5,
-                        fontFamily: "monospace",
-                        fontSize: "0.55rem",
-                        color: charCount > 800 ? "#f97316" : "#1e1e2e",
-                        letterSpacing: "0.1em",
-                      }}
-                    >
+                    <div className={`flex justify-end mt-2 font-mono text-[0.62rem] tracking-wider transition-colors ${charCount > 800 ? "text-orange-500" : "text-[#1e1e2e]"}`}>
                       {charCount} CHARS
                     </div>
                   </div>
 
-                  {/* Global error */}
                   <AnimatePresence>
                     {globalError && (
                       <motion.div
                         initial={{ opacity: 0, y: -6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                          padding: "8px 12px",
-                          background: "#ef444412",
-                          border: "1px solid #ef444433",
-                          borderRadius: 4,
-                          fontFamily: "monospace",
-                          fontSize: "0.62rem",
-                          letterSpacing: "0.08em",
-                        }}
+                        className="flex items-center gap-2.5 p-2.5 bg-red-500/10 border border-red-500/20 rounded font-mono text-[0.7rem] tracking-wide text-red-400"
                       >
                         <span>✕</span>
                         <span>{globalError}</span>
@@ -849,53 +467,26 @@ export default function Contact() {
                     )}
                   </AnimatePresence>
 
-                  {/* Submit */}
                   <motion.button
                     onClick={handleSubmit}
                     disabled={loading}
                     whileTap={{ scale: 0.98 }}
-                    style={{
-                      width: "100%",
-                      padding: "13px 0",
-                      background: loading
-                        ? "#1a1a28"
-                        : "linear-gradient(135deg, #f97316, #ea580c)",
-                      color: loading ? "#333" : "#000",
-                      fontFamily: "monospace",
-                      fontWeight: 800,
-                      fontSize: "0.78rem",
-                      letterSpacing: "0.22em",
-                      border: loading ? "1px solid #2a2a3e" : "none",
-                      borderRadius: 5,
-                      cursor: loading ? "not-allowed" : "pointer",
-                      position: "relative",
-                      overflow: "hidden",
-                      transition: "background 0.2s",
-                    }}
+                    className={`w-full py-4 rounded-md font-mono font-black text-[0.85rem] tracking-[0.25em] uppercase transition-all relative overflow-hidden
+                      ${loading ? 'bg-[#1a1a28] text-gray-700 cursor-not-allowed' : 'bg-gradient-to-br from-orange-500 to-orange-700 text-black hover:brightness-110'}`}
                   >
-                    {/* Shimmer on hover */}
                     {!loading && (
                       <motion.div
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: "-100%",
-                          width: "60%",
-                          height: "100%",
-                          background:
-                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-                          skewX: "-20deg",
-                        }}
-                        animate={{ left: ["−100%", "200%"] }}
+                        className="absolute top-0 w-3/5 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-[20deg]"
+                        animate={{ left: ["-100%", "200%"] }}
                         transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 1.2 }}
                       />
                     )}
                     {loading ? (
-                      <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                      <span className="flex items-center justify-center gap-3">
                         <motion.span
                           animate={{ rotate: 360 }}
                           transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
-                          style={{ display: "inline-block", fontSize: "0.85rem" }}
+                          className="text-lg"
                         >
                           ◌
                         </motion.span>
@@ -906,15 +497,7 @@ export default function Contact() {
                     )}
                   </motion.button>
 
-                  {/* Footer note */}
-                  <div
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "monospace",
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.1em",
-                    }}
-                  >
+                  <div className="text-center font-mono text-[0.62rem] tracking-widest text-[#2a2a3e] uppercase">
                     YOUR MESSAGE IS END-TO-END ENCRYPTED · NO SPAM EVER
                   </div>
                 </motion.div>
