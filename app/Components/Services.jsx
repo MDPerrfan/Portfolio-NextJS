@@ -1,351 +1,522 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ── Service data ──────────────────────────────────────────────────────────────
 const SERVICES = [
   {
     id: "fullstack",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="1" y="1" width="14" height="10" fill="#1a6fff" />
-        <rect x="2" y="2" width="12" height="8"  fill="#0a0a14" />
-        <rect x="3" y="3" width="3"  height="1"  fill="#f97316" />
-        <rect x="3" y="5" width="5"  height="1"  fill="#4ade80" />
-        <rect x="3" y="7" width="4"  height="1"  fill="#f97316" />
-        <rect x="8" y="3" width="4"  height="1"  fill="#7DD3FC" />
-        <rect x="9" y="5" width="3"  height="1"  fill="#7DD3FC" />
-        <rect x="5" y="12" width="6" height="1"  fill="#1a6fff" />
-        <rect x="3" y="13" width="10" height="2" fill="#1a6fff" />
-      </svg>
-    ),
-    label: "FULL-STACK DEV",
+    index: "01",
+    label: "Full-Stack Development",
     tag: "MERN STACK",
-    tagColor: "#f97316",
-    desc: "End-to-end web applications from database to UI. React, Next.js, Node.js, Express, MongoDB — the full chain.",
-    perks: ["REST API Design", "Auth & JWT", "Server Components", "DB Modeling"],
+    accent: "#f97316",
+    shortDesc: "End-to-end web apps. Database to UI.",
+    desc: "Complete web applications built from scratch — React or Next.js on the front, Node + Express on the back, MongoDB for data. I own the whole stack so nothing gets lost between layers.",
+    perks: ["REST API Design", "JWT Auth", "Server Components", "DB Modeling"],
+    stat: { label: "Stack Coverage", value: "100%" },
   },
   {
     id: "frontend",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="0" y="4"  width="4"  height="4"  fill="#f97316" />
-        <rect x="1" y="5"  width="2"  height="2"  fill="#c2410c" />
-        <rect x="6" y="2"  width="4"  height="4"  fill="#7DD3FC" />
-        <rect x="7" y="3"  width="2"  height="2"  fill="#0ea5e9" />
-        <rect x="4" y="8"  width="4"  height="4"  fill="#4ade80" />
-        <rect x="5" y="9"  width="2"  height="2"  fill="#16a34a" />
-        <rect x="10" y="6" width="4"  height="4"  fill="#f5e642" />
-        <rect x="11" y="7" width="2"  height="2"  fill="#ca8a04" />
-        <rect x="4"  y="4" width="1"  height="1"  fill="#f97316" opacity="0.5" />
-        <rect x="9"  y="1" width="1"  height="1"  fill="#7DD3FC" opacity="0.5" />
-      </svg>
-    ),
-    label: "UI / FRONTEND",
+    index: "02",
+    label: "UI / Frontend Engineering",
     tag: "REACT · NEXT.JS",
-    tagColor: "#7DD3FC",
-    desc: "Pixel-perfect, responsive interfaces with smooth animations. Tailwind CSS, Framer Motion, and GSAP in my toolkit.",
-    perks: ["Responsive Design", "Animations", "Dark Mode", "Performance"],
+    accent: "#7dd3fc",
+    shortDesc: "Pixel-perfect interfaces. Smooth motion.",
+    desc: "Interfaces that feel as good as they look. Tailwind for precision layout, Framer Motion for fluid animation, and obsessive attention to performance and responsiveness across every screen.",
+    perks: ["Responsive Design", "Framer Motion", "Dark Mode", "Core Web Vitals"],
+    stat: { label: "Lighthouse Score", value: "98+" },
   },
   {
     id: "backend",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="2"  y="1"  width="12" height="3"  fill="#333"    />
-        <rect x="3"  y="2"  width="2"  height="1"  fill="#4ade80" />
-        <rect x="6"  y="2"  width="5"  height="1"  fill="#1e1e2e" />
-        <rect x="2"  y="6"  width="12" height="3"  fill="#333"    />
-        <rect x="3"  y="7"  width="2"  height="1"  fill="#f97316" />
-        <rect x="6"  y="7"  width="5"  height="1"  fill="#1e1e2e" />
-        <rect x="2"  y="11" width="12" height="3"  fill="#333"    />
-        <rect x="3"  y="12" width="2"  height="1"  fill="#7DD3FC" />
-        <rect x="6"  y="12" width="5"  height="1"  fill="#1e1e2e" />
-        <rect x="13" y="2"  width="1"  height="1"  fill="#4ade80" />
-        <rect x="13" y="7"  width="1"  height="1"  fill="#f97316" />
-        <rect x="13" y="12" width="1"  height="1"  fill="#7DD3FC" />
-      </svg>
-    ),
-    label: "BACKEND / API",
+    index: "03",
+    label: "Backend & API Architecture",
     tag: "NODE · EXPRESS",
-    tagColor: "#4ade80",
-    desc: "Scalable REST APIs, authentication systems, and server-side logic. Clean architecture, proper error handling.",
-    perks: ["REST APIs", "Middleware", "File Uploads", "Rate Limiting"],
+    accent: "#4ade80",
+    shortDesc: "Scalable APIs. Clean architecture.",
+    desc: "Production-grade REST APIs with proper structure — controllers, middleware, error handling, rate limiting. Built to scale and easy for other devs to pick up and extend.",
+    perks: ["REST APIs", "Middleware Chains", "File Uploads", "Rate Limiting"],
+    stat: { label: "API Reliability", value: "99.9%" },
   },
   {
     id: "database",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="3" y="2"  width="10" height="3"  fill="#4ade80" />
-        <rect x="2" y="3"  width="12" height="1"  fill="#16a34a" />
-        <rect x="3" y="7"  width="10" height="3"  fill="#4ade80" />
-        <rect x="2" y="8"  width="12" height="1"  fill="#16a34a" />
-        <rect x="3" y="12" width="10" height="3"  fill="#4ade80" />
-        <rect x="2" y="13" width="12" height="1"  fill="#16a34a" />
-        <rect x="2" y="5"  width="1"  height="2"  fill="#4ade80" />
-        <rect x="13" y="5" width="1"  height="2"  fill="#4ade80" />
-        <rect x="2" y="10" width="1"  height="2"  fill="#4ade80" />
-        <rect x="13" y="10" width="1" height="2"  fill="#4ade80" />
-        <rect x="5" y="3"  width="2"  height="1"  fill="#fff" opacity="0.4" />
-        <rect x="5" y="8"  width="2"  height="1"  fill="#fff" opacity="0.4" />
-      </svg>
-    ),
-    label: "DATABASE",
-    tag: "MONGODB",
-    tagColor: "#4ade80",
-    desc: "Schema design, indexing, aggregation pipelines, and cloud deployment via MongoDB Atlas. Data that scales.",
+    index: "04",
+    label: "Database Design",
+    tag: "MONGODB · ATLAS",
+    accent: "#4ade80",
+    shortDesc: "Schemas that scale. Data that performs.",
+    desc: "MongoDB schema design with Mongoose, indexing strategies, aggregation pipelines, and Atlas cloud deployment. Your data layer built right from day one — no painful migrations later.",
     perks: ["Schema Design", "Aggregations", "Atlas Cloud", "Mongoose ODM"],
+    stat: { label: "Query Optimised", value: "Yes" },
   },
   {
     id: "deploy",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="6"  y="0"  width="4"  height="2"  fill="#f97316" />
-        <rect x="5"  y="2"  width="6"  height="2"  fill="#f97316" />
-        <rect x="4"  y="4"  width="8"  height="5"  fill="#DDDDE8" />
-        <rect x="6"  y="5"  width="4"  height="3"  fill="#7DD3FC" />
-        <rect x="6"  y="5"  width="2"  height="1"  fill="#fff" opacity="0.6" />
-        <rect x="3"  y="7"  width="2"  height="2"  fill="#f97316" />
-        <rect x="11" y="7"  width="2"  height="2"  fill="#f97316" />
-        <rect x="4"  y="9"  width="8"  height="1"  fill="#AAAAB8" />
-        <rect x="5"  y="10" width="6"  height="3"  fill="#f5e642" opacity="0.8" />
-        <rect x="6"  y="10" width="4"  height="2"  fill="#FF8C00" opacity="0.9" />
-      </svg>
-    ),
-    label: "DEPLOYMENT",
-    tag: "VERCEL · CLOUD",
-    tagColor: "#f5e642",
-    desc: "CI/CD pipelines, environment management, domain config. Apps deployed on Vercel, Railway, and Render.",
-    perks: ["Vercel Deploy", "CI/CD", "Env Secrets", "Domain Config"],
+    index: "05",
+    label: "Deployment & DevOps",
+    tag: "VERCEL · RENDER",
+    accent: "#f5e642",
+    shortDesc: "Ship fast. Stay live. Zero downtime.",
+    desc: "From local to production — CI/CD pipelines, environment variable management, domain configuration and SSL. Apps deployed on Vercel, Railway, and Render with automatic preview builds.",
+    perks: ["CI/CD Pipelines", "Preview Deploys", "Env Management", "Domain Config"],
+    stat: { label: "Deploy Time", value: "<2 min" },
   },
   {
     id: "freelance",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 16 16" style={{ imageRendering: "pixelated" }}>
-        <rect x="2"  y="2"  width="5"  height="5"  fill="#f5e642" />
-        <rect x="3"  y="3"  width="3"  height="3"  fill="#ca8a04" />
-        <rect x="9"  y="2"  width="5"  height="5"  fill="#f97316" />
-        <rect x="10" y="3"  width="3"  height="3"  fill="#c2410c" />
-        <rect x="2"  y="9"  width="5"  height="5"  fill="#7DD3FC" />
-        <rect x="3"  y="10" width="3"  height="3"  fill="#0ea5e9" />
-        <rect x="9"  y="9"  width="5"  height="5"  fill="#4ade80" />
-        <rect x="10" y="10" width="3"  height="3"  fill="#16a34a" />
-        <rect x="7"  y="7"  width="2"  height="2"  fill="#f97316" />
-      </svg>
-    ),
-    label: "FREELANCE",
+    index: "06",
+    label: "Freelance Projects",
     tag: "HIRE ME",
-    tagColor: "#f5e642",
-    desc: "Open for freelance projects. Portfolio sites, SaaS MVPs, admin dashboards — delivered clean and on time.",
-    perks: ["Fixed Price", "Fast Delivery", "Revision Rounds", "Source Code"],
+    accent: "#a78bfa",
+    shortDesc: "Fixed price. Fast delivery. Clean code.",
+    desc: "Open for freelance work — portfolio sites, SaaS MVPs, admin dashboards, landing pages. You get a fixed quote upfront, clear milestones, revision rounds, and full source code on delivery.",
+    perks: ["Fixed Pricing", "Fast Turnaround", "Revision Rounds", "Full Source"],
+    stat: { label: "Availability", value: "Open" },
   },
 ];
 
-// ── Pixel coin SVG ────────────────────────────────────────────────────────────
-function PixelCoin() {
+// ── Blinking cursor ───────────────────────────────────────────────────────────
+function Cursor() {
+  const [on, setOn] = useState(true);
+  useEffect(() => {
+    const t = setInterval(() => setOn((v) => !v), 530);
+    return () => clearInterval(t);
+  }, []);
   return (
-    <svg width="10" height="10" viewBox="0 0 8 8" style={{ imageRendering: "pixelated" }}>
-      <rect x="2" y="0" width="4" height="1" fill="#f5e642" />
-      <rect x="1" y="1" width="6" height="1" fill="#f5e642" />
-      <rect x="0" y="2" width="8" height="4" fill="#f5e642" />
-      <rect x="1" y="6" width="6" height="1" fill="#f5e642" />
-      <rect x="2" y="7" width="4" height="1" fill="#f5e642" />
-    </svg>
+    <span
+      style={{
+        display: "inline-block",
+        width: 8,
+        height: "1em",
+        background: on ? "#f97316" : "transparent",
+        marginLeft: 2,
+        verticalAlign: "middle",
+        borderRadius: 1,
+      }}
+    />
   );
 }
 
-// ── Single service card ───────────────────────────────────────────────────────
-function ServiceCard({ service, index, visible }) {
-  const [hovered, setHovered] = useState(false);
-
+// ── Detail panel ─────────────────────────────────────────────────────────────
+function DetailPanel({ service }) {
   return (
-    <div
-      className="relative flex flex-col gap-3 p-5 rounded-sm cursor-default transition-all duration-150"
-      style={{
-        background: "#0a0a14",
-        border: hovered ? `3px solid ${service.tagColor}` : "3px solid #1e1e2e",
-        boxShadow: hovered
-          ? `5px 5px 0 #111, 7px 7px 0 ${service.tagColor}55`
-          : "4px 4px 0 #111",
-        transform: visible
-          ? hovered ? "translate(-2px,-2px)" : "translate(0,0)"
-          : "translateY(32px)",
-        opacity: visible ? 1 : 0,
-        transition: `transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, opacity 0.4s ease ${index * 0.07}s`,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <motion.div
+      key={service.id}
+      initial={{ opacity: 0, x: 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 16 }}
+      transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+      style={{ height: "100%" }}
     >
-      {/* Top strip */}
+      {/* Top accent bar */}
       <div
-        className="absolute top-0 left-0 right-0 h-[3px] rounded-t-sm"
+        className=" h-1 mb-4"
         style={{
-          background: hovered
-            ? `repeating-linear-gradient(90deg, ${service.tagColor} 0px, ${service.tagColor} 6px, transparent 6px, transparent 10px)`
-            : "repeating-linear-gradient(90deg, #1e1e2e 0px, #1e1e2e 6px, transparent 6px, transparent 10px)",
-          transition: "background 0.2s ease",
+          background: `linear-gradient(90deg, ${service.accent}, transparent)`,
         }}
       />
 
-      {/* Header row */}
-      <div className="flex items-start justify-between gap-2 pt-1">
-        <div className="flex items-center gap-3">
-          {/* Icon box */}
-          <div
-            className="flex items-center justify-center w-12 h-12 rounded-sm flex-shrink-0"
-            style={{
-              background: "#0e0e1a",
-              border: "2px solid #1e1e2e",
-              boxShadow: "2px 2px 0 #111",
-            }}
-          >
-            {service.icon}
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-white font-black text-sm tracking-widest">
-              {service.label}
-            </span>
-            <span
-              className="text-[0.58rem] font-black tracking-[0.18em] px-2 py-0.5 rounded-sm w-fit"
-              style={{
-                color: service.tagColor,
-                background: `${service.tagColor}18`,
-                border: `1px solid ${service.tagColor}44`,
-              }}
-            >
-              {service.tag}
-            </span>
-          </div>
-        </div>
-
-        {/* Hover arrow */}
-        <span
-          className="text-orange-500 text-xs font-black mt-1 flex-shrink-0 transition-opacity duration-150"
-          style={{ opacity: hovered ? 1 : 0 }}
+      {/* Index + label */}
+      <div className="mb-3" >
+        <div
+          className="mx-4"
+          style={{
+            fontSize: "0.8rem",
+            letterSpacing: "0.22em",
+            color: service.accent,
+            marginBottom: 6,
+            fontFamily: "monospace",
+          }}
         >
-          ▶
+          SERVICE_{service.index}
+        </div>
+        <h3
+          className="mx-4"
+          style={{
+            fontSize: "1.35rem",
+            fontWeight: 800,
+            letterSpacing: "0.02em",
+            lineHeight: 1.2,
+          }}
+        >
+          {service.label}
+        </h3>
+        <span
+          className="mx-4"
+          style={{
+            display: "inline-block",
+            marginTop: 8,
+            fontSize: "0.68rem",
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            color: service.accent,
+            background: `${service.accent}18`,
+            border: `1px solid ${service.accent}44`,
+            borderRadius: 3,
+            padding: "2px 8px",
+          }}
+        >
+          {service.tag}
         </span>
       </div>
 
       {/* Description */}
-      <p className="text-gray-500 text-[0.75rem] font-bold leading-relaxed">
+      <p
+        className="mx-4"
+        style={{
+          fontSize: "0.82rem",
+          lineHeight: 1.75,
+          marginBottom: 28,
+          borderLeft: `2px solid ${service.accent}44`,
+          paddingLeft: 14,
+        }}
+      >
         {service.desc}
       </p>
 
-      {/* Pixel divider */}
-      <div
-        style={{
-          height: 2,
-          background:
-            "repeating-linear-gradient(90deg, #1e1e2e 0px, #1e1e2e 6px, transparent 6px, transparent 10px)",
-        }}
-      />
-
-      {/* Perks */}
-      <div className="flex flex-wrap gap-2">
-        {service.perks.map((perk) => (
-          <div key={perk} className="flex items-center gap-1.5">
-            <PixelCoin />
-            <span className="text-[0.62rem] font-black tracking-wide text-gray-500">
-              {perk}
-            </span>
-          </div>
-        ))}
+      {/* Capabilities list */}
+      <div className="mb-5 mx-4">
+        <div
+          style={{
+            fontSize: "0.58rem",
+            letterSpacing: "0.18em",
+            color: "#444",
+            marginBottom: 12,
+            fontFamily: "monospace",
+          }}
+        >
+          CAPABILITIES
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {service.perks.map((perk, i) => (
+            <motion.div
+              key={perk}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.07, duration: 0.2 }}
+              style={{ display: "flex", alignItems: "center", gap: 10 }}
+            >
+              <span style={{ color: service.accent, fontFamily: "monospace", fontSize: "0.7rem" }}>
+                ▸
+              </span>
+              <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.04em" }}>
+                {perk}
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Stat pill */}
+      <div
+        className="mx-4"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 12,
+          background: `${service.accent}10`,
+          border: `1px solid ${service.accent}30`,
+          borderRadius: 6,
+          padding: "10px 16px",
+        }}
+      >
+        <span style={{ fontSize: "0.6rem", letterSpacing: "0.14em", color: "#555", fontFamily: "monospace" }}>
+          {service.stat.label}
+        </span>
+        <span style={{ fontSize: "1rem", fontWeight: 800, color: service.accent }}>
+          {service.stat.value}
+        </span>
+      </div>
+    </motion.div>
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Service row ───────────────────────────────────────────────────────────────
+function ServiceRow({ service, isActive, onClick, visible, delay }) {
+  const [hovered, setHovered] = useState(false);
+  const highlighted = isActive || hovered;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={visible ? { opacity: 1, x: 0 } : {}}
+      transition={{ delay, duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 16,
+        padding: "14px 20px",
+        cursor: "pointer",
+        borderBottom: "1px solid #111",
+        background: isActive
+          ? `${service.accent}0c`
+          : hovered
+            ? "#0d0d1a"
+            : "transparent",
+        borderLeft: `3px solid ${isActive ? service.accent : "transparent"}`,
+        transition: "background 0.15s ease, border-color 0.15s ease",
+        position: "relative",
+      }}
+    >
+      {/* Index */}
+      <span
+        style={{
+          fontFamily: "monospace",
+          fontSize: "0.62rem",
+          color: highlighted ? service.accent : "#2a2a3a",
+          width: 22,
+          flexShrink: 0,
+          transition: "color 0.15s",
+        }}
+      >
+        {service.index}
+      </span>
+
+      {/* Label + short desc */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            color: highlighted ? "#fff" : "#666",
+            letterSpacing: "0.04em",
+            transition: "color 0.15s",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {service.label}
+        </div>
+        <div
+          style={{
+            fontSize: "0.62rem",
+            color: highlighted ? "#555" : "#2a2a3a",
+            marginTop: 2,
+            fontFamily: "monospace",
+            transition: "color 0.15s",
+          }}
+        >
+          {service.shortDesc}
+        </div>
+      </div>
+
+      {/* Tag badge */}
+      <span
+        style={{
+          fontSize: "0.52rem",
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          color: highlighted ? service.accent : "#2a2a3a",
+          border: `1px solid ${highlighted ? service.accent + "55" : "#1a1a2a"}`,
+          borderRadius: 3,
+          padding: "2px 7px",
+          flexShrink: 0,
+          fontFamily: "monospace",
+          transition: "color 0.15s, border-color 0.15s",
+        }}
+      >
+        {service.tag}
+      </span>
+
+      {/* Arrow */}
+      <span
+        style={{
+          color: service.accent,
+          fontSize: "0.65rem",
+          opacity: isActive ? 1 : 0,
+          transition: "opacity 0.15s",
+          flexShrink: 0,
+        }}
+      >
+        ▶
+      </span>
+    </motion.div>
+  );
+}
+
+// ── Main ─────────────────────────────────────────────────────────────────────
 export default function Services() {
+  const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null);
 
-  // IntersectionObserver — trigger once when section enters viewport
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const selected = SERVICES[active];
+
   return (
     <section
+
       id="services"
       ref={sectionRef}
-      className="w-full px-6 py-20 flex justify-center"
-    >
-      <div className="w-full max-w-6xl flex flex-col gap-12">
+      className="w-full px-4 md:px-8 py-20 flex justify-center">
+      <div className="w-full max-w-6xl flex flex-col gap-14">
 
-        {/* Heading */}
-        <div
-          className="flex flex-col items-center gap-3"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(-16px)",
-            transition: "opacity 0.4s ease, transform 0.4s ease",
-          }}
+        {/* ── Heading ── */}
+        <motion.div
+          className="flex flex-col gap-3"
+          initial={{ opacity: 0, y: -20 }}
+          animate={visible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
         >
           <p className="text-2xl md:text-4xl font-extrabold tracking-widest text-center">
-            ▸ WHAT I{" "}
-            <span className="text-orange-500">OFFER</span>
+            ▸ WHAT I <span className="text-orange-500">BUILD</span>
           </p>
-
-          {/* Pixel divider */}
+          {/* Terminal prompt line */}
           <div
-            className="w-32"
             style={{
-              height: 3,
-              background:
-                "repeating-linear-gradient(90deg, #f97316 0px, #f97316 8px, transparent 8px, transparent 12px)",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              justifyContent: "center",
+              fontFamily: "monospace",
+              fontSize: "0.72rem",
+              color: "#333",
             }}
-          />
-
-          <p className="text-gray-500 text-sm font-bold tracking-wide text-center max-w-md">
-            Services I provide — from first commit to production deploy.
-          </p>
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SERVICES.map((service, i) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              index={i}
-              visible={visible}
-            />
-          ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div
-          className="flex justify-center"
-          style={{
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.4s ease 0.5s",
-          }}
-        >
-          <a
-            href="#contact"
-            className="group flex items-center gap-3 px-6 py-3 font-black text-sm tracking-[0.18em]
-                       text-black no-underline rounded-sm transition-all duration-150 active:translate-y-px"
-            style={{
-              background:
-                "repeating-linear-gradient(90deg, #f97316 0px, #f97316 10px, #c2410c 10px, #c2410c 14px)",
-              boxShadow: "4px 4px 0 #111",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "6px 6px 0 #111"; e.currentTarget.style.transform = "translate(-1px,-1px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 #111"; e.currentTarget.style.transform = "translate(0,0)"; }}
           >
-            <span className="group-hover:animate-bounce inline-block">▶</span>
-            HIRE ME
-          </a>
-        </div>
+            <span style={{ color: "#4ade80" }}>~/portfolio</span>
+            <span style={{ color: "#555" }}>$</span>
+            <span style={{ color: "#888" }}>ls services/</span>
+            <Cursor />
+          </div>
+        </motion.div>
 
+        {/* ── Main panel ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={visible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            background: "transparent",
+            backdropFilter: "blur(12px)",
+            border: "1px solid #1a1a2a",
+            borderRadius: 8,
+            overflow: "hidden",
+            minHeight: 480,
+          }}
+          className="flex-col lg:flex-row"
+        >
+          {/* Left — service list (terminal sidebar) */}
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 420,
+              borderRight: "1px solid #111",
+              display: "flex",
+              flexDirection: "column",
+              flexShrink: 0,
+            }}
+          >
+
+            {/* Sidebar titlebar */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "10px 20px",
+                borderBottom: "1px solid #111",
+                background: "#05050f",
+              }}
+            >
+              <div style={{ display: "flex", gap: 5 }}>
+                {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+                  <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.7 }} />
+                ))}
+              </div>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.6rem",
+                  color: "#2a2a3a",
+                  marginLeft: 8,
+                  letterSpacing: "0.1em",
+                }}
+              >
+                services.config.js
+              </span>
+            </div>
+
+            {/* Rows */}
+            <div style={{ flex: 1, overflowY: "auto" }}>
+              {SERVICES.map((service, i) => (
+                <ServiceRow
+                  key={service.id}
+                  service={service}
+                  isActive={active === i}
+                  onClick={() => setActive(i)}
+                  visible={visible}
+                  delay={0.1 + i * 0.06}
+                />
+              ))}
+            </div>
+
+            {/* Bottom status bar */}
+            <div
+              style={{
+                padding: "7px 20px",
+                borderTop: "1px solid #111",
+                background: "#05050f",
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                fontFamily: "monospace",
+                fontSize: "0.55rem",
+              }}
+            >
+              <span style={{ color: selected.accent, opacity: 0.8 }}>●</span>
+              <span>{SERVICES.length} services</span>
+              <span style={{ marginLeft: "auto" }}>UTF-8</span>
+            </div>
+          </div>
+
+          {/* Right — detail view */}
+          <div className="flex flex-col flex-1 min-w-0 relative border-l border-[#111] hidden md:block">
+
+            {/* Top title bar (same height as left) */}
+            <div className="h-[35.3px] border-b border-[#111] bg-[#05050f]" />
+
+            {/* Detail titlebar */}
+            <div className="mx-4 py-2 flex items-center gap-2 font-mono text-[0.68rem] tracking-[0.1em] text-[#2a2a3a]">
+              <span className="text-[#1a1a2a]">▸</span>
+              <span>{selected.id}.md</span>
+              <span className="ml-auto" style={{ color: selected.accent }}>
+                {selected.index}/{SERVICES.length}
+              </span>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto relative">
+              <AnimatePresence mode="wait">
+                <DetailPanel key={selected.id} service={selected} />
+              </AnimatePresence>
+
+              {/* Dot grid background */}
+              <div className="absolute inset-0 pointer-events-none opacity-35 z-0"
+                style={{
+                  backgroundImage: "radial-gradient(circle, #1a1a2a 1px, transparent 1px)",
+                  backgroundSize: "24px 24px",
+                }}
+              />
+            </div>
+
+            {/* Bottom bar (to match left side) */}
+            <div className="h-[28px] border-t border-[#111] bg-[#05050f]" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -38,7 +38,7 @@ const CATEGORIES = [
   {
     id: "backend",
     label: "Backend",
-    color: "#22d3ee",
+    color: "#319246",
     glow: "rgba(34,211,238,0.4)",
     dimGlow: "rgba(34,211,238,0.08)",
     orbitR: [90, 140, 185],
@@ -74,8 +74,8 @@ const CATEGORIES = [
 
 // Y_SQUASH: how "tilted" the ellipse looks. 0 = flat line, 1 = circle, 0.32 ≈ 45° tilt
 const Y_SQUASH = 0.32;
-const SVG_W = 400;
-const SVG_H = 400;
+const SVG_W = 420;
+const SVG_H = 300;
 const CX = SVG_W / 2; // 220
 const CY = SVG_H / 2; // 220
 const NODE_R = 20;
@@ -565,15 +565,15 @@ export default function Skills() {
         </motion.div>
 
         {/* Main UI */}
-        <div className="w-full flex flex-col lg:flex-row gap-8 items-stretch">
+        <div className="w-full flex flex-col lg:flex-row gap-4 items-stretch">
 
           {/* Orbital canvas */}
           <motion.div
             className="relative flex-shrink-0 rounded-lg overflow-hidden"
             style={{
               width: "100%",
-              maxWidth: 560,
-              height: 600,
+              maxWidth: 660,
+              height: 500,
               margin: "0 auto",
             }}
        

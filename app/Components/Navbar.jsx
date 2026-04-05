@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-const NAV_ITEMS = ["Home", "About", "Skills","Services", "Projects", "Contact"];
+const NAV_ITEMS = ["Home", "About", "Skills", "Services", "Projects", "Contact"];
 
 // Pixel Mario SVG (8-bit style, inline)
 function MarioSprite({ jumping, facingLeft }) {
@@ -82,7 +82,7 @@ export default function Navbar() {
   const animRef = useRef(null);
   const posRef = useRef(0);
   const jumpSound = useRef(null);
-  
+
   // Replace the existing scroll useEffect with this:
   useEffect(() => {
     const handleScroll = () => {
@@ -107,7 +107,7 @@ export default function Navbar() {
   }, []);
   // Initialize mario under first nav item
   // Map nav items to their section IDs
-  const SECTION_IDS = ["hero", "about", "skills","services", "projects", "contact"];
+  const SECTION_IDS = ["hero", "about", "skills", "services", "projects", "contact"];
   useEffect(() => {
     const observers = [];
 
@@ -141,6 +141,10 @@ export default function Navbar() {
     return () => observers.forEach((o) => o.disconnect());
   }, [jumping]); // re-run when jumping state settles
   // Change the signature to accept optional fromIdx
+  const isDesktop = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(min-width: 768px)").matches; // md breakpoint
+  };
   const jumpTo = (toIdx, fromIdx_override) => {
     const fromIdx = fromIdx_override ?? activeIdx; // ← use override if provided
     if (jumping) return;
@@ -160,7 +164,7 @@ export default function Navbar() {
     setJumping(true);
     setJumpTarget(toIdx);
     // play jump sound
-    if (jumpSound.current) {
+    if (jumpSound.current && isDesktop()) {
       jumpSound.current.currentTime = 0;
       jumpSound.current.play();
 
