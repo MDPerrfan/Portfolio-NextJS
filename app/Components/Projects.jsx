@@ -88,7 +88,7 @@ function ScreenContent({ project, direction }) {
           <img
             src={imgSrc} alt={project.title}
             onLoad={() => setLoaded(true)}
-            className={`w-full h-full object-cover object-top block transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
+            className={`w-full h-full object-contain md:object-cover object-top block transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-[#05050e]">
