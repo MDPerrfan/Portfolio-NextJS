@@ -143,8 +143,8 @@ export default function HomeClient({ projects, about }) {
 
         {/* Wave 3 */}
         {wave >= 3 && <Skills />}
-        {/* {wave >= 3 && <Services />} */}
-        {wave >= 3 && <Projects projects={projects} />}
+        {wave >= 3 && <Services />}
+        {/* {wave >= 3 && <Projects projects={projects} />} */}
         {wave >= 3 && <Contact />}
         {wave >= 3 && <Footer about={about} />}
 

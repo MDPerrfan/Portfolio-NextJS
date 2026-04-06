@@ -52,9 +52,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
-      {/* <div>
+      <div className=' md:hidden'>
         <StatsCard />
-      </div> */}
+      </div>
     </div>
   );
 }
