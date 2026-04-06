@@ -591,7 +591,7 @@ export default function Skills() {
           <motion.div
             onMouseEnter={() => setPaused(true)}   // pause on hover
             onMouseLeave={() => setPaused(false)}  // resume
-            className="relative flex-shrink-0 rounded-lg overflow-hidden"
+            className="hidden md:block relative flex-shrink-0 rounded-lg overflow-hidden"
             style={{
               width: "100%",
               maxWidth: 660,
