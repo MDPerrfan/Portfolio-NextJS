@@ -124,11 +124,13 @@ export default function StatsCard() {
                 {typed}<Cursor />
               </div>
               <div className="text-[0.58rem] text-gray-500 font-bold tracking-[0.12em]">FULL-STACK DEV</div>
-              <div className="text-[0.58rem] text-gray-500 font-bold tracking-[0.12em]">MERN STACK</div>
               <div className="mt-1 px-2 py-0.5 bg-orange-500 rounded-sm">
-                <span className="text-[0.58rem] font-black text-black tracking-wider">LV.23  ★★★☆☆</span>
+                <span className="text-sm text-gray-200 tracking-wider">
+                  <a href="mailto:mdperrfan@gmail.com?subject=Hiring Inquiry" target="_blank" rel="noopener noreferrer">
+                    HIRE ME!
+                  </a>
+                  </span>
               </div>
-              <div className="text-[0.55rem] text-orange-500 font-black blink-text mt-1">▶ AVAILABLE</div>
             </div>
           </div>
         </div>

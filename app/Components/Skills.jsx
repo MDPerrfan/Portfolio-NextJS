@@ -565,7 +565,7 @@ export default function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="w-full px-4 md:px-8 py-10 flex flex-col items-center"
+      className="w-full px-4 md:px-8 py-10 flex flex-col items-center min-h-screen"
     >
       <div className="w-full max-w-6xl flex flex-col items-center gap-5">
 
@@ -682,7 +682,7 @@ export default function Skills() {
           </div>
 
           <div
-            className="w-full rounded-lg p-6 overflow-x-auto flex justify-center"
+            className="w-full rounded-lg p-4 overflow-x-auto flex justify-center"
             style={{
               background: "#050510",
               border: "1px solid #1a1a2e",
@@ -702,7 +702,7 @@ export default function Skills() {
               {isMounted ? (
                 <GitHubCalendar
                   username="MDPerrfan"
-                  blockSize={13}
+                  blockSize={13 }
                   blockMargin={4}
                   fontSize={12}
                   theme={{
@@ -713,7 +713,7 @@ export default function Skills() {
               ) : (
                 <div
                   className="animate-pulse rounded-sm"
-                  style={{ height: 144, width: "100%", maxWidth: 680, background: "#0e0e1a" }}
+                  style={{ height: 140, width: "100%", maxWidth: 680, background: "#0e0e1a" }}
                 />
               )}
             </div>

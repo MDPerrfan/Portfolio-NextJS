@@ -10,11 +10,11 @@ const About = ({ about }) => {
   const location = about?.location || "Chittagong, Bangladesh";
   const title = about?.title || "Full Stack Developer";
   return (
-    <div id="about" className="flex flex-col lg:flex-row  items-center justify-center gap-20 px-6 py-4">
+    <div id="about" className="flex flex-col lg:flex-row  items-center justify-center gap-20 px-6 pb-20 min-h-screen">
       <div className="flex flex-col items-center text-center max-w-6xl">
         {/* Heading */}
         <p className="text-2xl md:text-4xl font-semibold mb-8">
-          ▸MY {''}
+          ▸ MY {''}
           <span className="text-orange-500 font-black">
             <span className="target-p inline-block opacity-0">P</span>ERSONA
           </span>
