@@ -626,22 +626,24 @@ export default function Projects({ projects = [] }) {
     };
   }, [active, paused, total]);
 
-  // Auto-scroll filmstrip
+// REPLACE the whole useEffect with:
   useEffect(() => {
     const strip = filmstripRef.current;
     if (!strip) return;
-    const thumb = strip.children[active];
-    if (!thumb) return;
+    const wrapper = strip.children[active];
+    if (!wrapper) return;
+    const stripRect = strip.getBoundingClientRect();
+    const wrapperRect = wrapper.getBoundingClientRect();
     const canScrollY = strip.scrollHeight > strip.clientHeight;
     const canScrollX = strip.scrollWidth > strip.clientWidth;
     if (canScrollY) {
-      strip.scrollTo({
-        top: thumb.offsetTop - strip.clientHeight / 2 + thumb.offsetHeight / 2,
+      strip.scrollBy({
+        top: wrapperRect.top - stripRect.top - strip.clientHeight / 2 + wrapperRect.height / 2,
         behavior: "smooth",
       });
     } else if (canScrollX) {
-      strip.scrollTo({
-        left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.offsetWidth / 2,
+      strip.scrollBy({
+        left: wrapperRect.left - stripRect.left - strip.clientWidth / 2 + wrapperRect.width / 2,
         behavior: "smooth",
       });
     }
@@ -707,7 +709,7 @@ export default function Projects({ projects = [] }) {
         >
           {/* Left/top: Laptop + meta */}
           <div
-            className="flex flex-col gap-3 flex-1 min-w-0"
+            className="flex flex-col gap-3 flex-1 min-w-0 w-full md:max-w-[65%] mx-auto"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
