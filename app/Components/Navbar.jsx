@@ -219,7 +219,6 @@ export default function Navbar() {
     transition-all duration-700 ease-in-out
     border border-white/20
     rounded-full
-    backdrop-blur-md
     shadow-lg
     overflow-visible
   `;
@@ -231,11 +230,7 @@ export default function Navbar() {
   return (
     <>
       <nav ref={navBarRef} className={`${containerClasses} ${positionClasses}`}>
-        {/* Smoke BG */}
-        <div className="absolute inset-0 z-0 pointer-events-none rounded-full overflow-hidden">
-          <div className="smoke smoke1" />
-          <div className="smoke smoke2" />
-        </div>
+
 
         <div className="relative z-10 w-full flex items-center justify-center px-4">
           {/* Mobile hamburger */}
@@ -329,34 +324,6 @@ export default function Navbar() {
       )}
 
       <style>{`
-        /* Smoke */
-        .smoke {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          border-radius: inherit;
-          background: radial-gradient(
-            circle at center,
-            rgba(255,255,255,0.2) 0%,
-            rgba(255,255,255,0.1) 40%,
-            transparent 70%
-          );
-          filter: blur(18px);
-          animation: float 22s infinite linear;
-          opacity: 0.45;
-        }
-        .smoke1 { animation-duration: 22s; }
-        .smoke2 {
-          animation-duration: 30s;
-          animation-direction: reverse;
-          opacity: 0.3;
-        }
-        @keyframes float {
-          0%   { transform: translate(0%,0%) rotate(0deg); }
-          50%  { transform: translate(5%,-5%) rotate(180deg); }
-          100% { transform: translate(0%,0%) rotate(360deg); }
-        }
 
         /* Mario jump arc */
         .mario-jump {

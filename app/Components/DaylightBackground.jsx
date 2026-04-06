@@ -10,70 +10,104 @@ export default function DaylightBackground() {
 
     let animationFrameId;
     let clouds = [];
+    let lastTime = 0;
+    let sunCache = null; // ← pre-rendered sun lives here
+
+    // ── Detect mobile once ────────────────────────────────────────────────────
+    const isMobile = () => window.innerWidth < 768;
+
+    // ── Target FPS: 30 on mobile, 60 on desktop ───────────────────────────────
+    const FRAME_MS = () => (isMobile() ? 1000 / 30 : 1000 / 60);
 
     const sun = {
       x: window.innerWidth * 0.85,
       y: window.innerHeight * 0.2,
       radius: 55,
-      glow: 60
     };
 
     // ===== Canvas Size =====
     const setCanvasSize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      sun.x = canvas.width * 0.85;
+      sun.y = canvas.height * 0.2;
+    };
+
+    // ===== Pre-render Sun to OffscreenCanvas (runs ONCE) =====================
+    //
+    // FIX: Previously, drawPixelCircle() ran a nested double for-loop on EVERY
+    // animation frame — ~1,712 fillRect() calls per frame = 102,720 ops/sec.
+    // Now we draw the sun pixel-art exactly once into an offscreen canvas and
+    // reuse it every frame with a single ctx.drawImage() call.
+    //
+    const buildSunCache = () => {
+      const size = (sun.radius + 20) * 2 + 8; // enough padding for glow
+      const off = document.createElement('canvas');
+      off.width = size;
+      off.height = size;
+      const oc = off.getContext('2d');
+      const cx = size / 2;
+      const cy = size / 2;
+      const ps = 4; // pixel size for dithering
+
+      const drawPixelCircle = (centerX, centerY, radius, color) => {
+        oc.fillStyle = color;
+        for (let y = -radius; y <= radius; y += ps) {
+          for (let x = -radius; x <= radius; x += ps) {
+            if (x * x + y * y <= radius * radius) {
+              oc.fillRect(
+                Math.floor((centerX + x) / ps) * ps,
+                Math.floor((centerY + y) / ps) * ps,
+                ps,
+                ps
+              );
+            }
+          }
+        }
+      };
+
+      // Outer glow
+      drawPixelCircle(cx, cy, sun.radius + 16, 'rgba(255, 220, 120, 0.4)');
+      // Main body
+      drawPixelCircle(cx, cy, sun.radius, '#ffb300');
+      // Highlight
+      drawPixelCircle(cx - 8, cy - 8, sun.radius * 0.5, '#fff8b0');
+
+      return { offscreen: off, size, cx, cy };
     };
 
     // ===== Create Clouds =====
     const createClouds = () => {
       clouds = [];
-      const count = Math.floor(canvas.width / 250);
+      // Fewer clouds on mobile to save draw calls
+      const count = isMobile()
+        ? Math.max(2, Math.floor(canvas.width / 400))
+        : Math.floor(canvas.width / 250);
 
       for (let i = 0; i < count; i++) {
         const baseX = Math.random() * canvas.width;
         const baseY = Math.random() * canvas.height * 0.6;
-
         clouds.push({
           baseX,
           x: baseX,
           y: baseY,
           size: 40 + Math.random() * 60,
           offset: Math.random() * Math.PI * 2,
-          speed: 0.002 + Math.random() * 0.003
+          speed: 0.002 + Math.random() * 0.003,
         });
       }
     };
-    const pixelSize = 4; // Size of each "pixel" for dithering
-    // ===== Draw Sun =====
-    const drawPixelCircle = (centerX, centerY, radius, color) => {
-      ctx.fillStyle = color;
-      for (let y = -radius; y <= radius; y += pixelSize) {
-        for (let x = -radius; x <= radius; x += pixelSize) {
-          if (x * x + y * y <= radius * radius) {
-            ctx.fillRect(
-              Math.floor((centerX + x) / pixelSize) * pixelSize,
-              Math.floor((centerY + y) / pixelSize) * pixelSize,
-              pixelSize,
-              pixelSize
-            );
-          }
-        }
-      }
-    };
 
+    // ===== Draw Sun (1 drawImage call instead of 1,712 fillRects) ============
     const drawSun = () => {
-      // Outer Glow (Dithered effect)
-      drawPixelCircle(sun.x, sun.y, sun.radius + 16, 'rgba(255, 220, 120, 0.4)');
-      // Main Sun Body
-      drawPixelCircle(sun.x, sun.y, sun.radius, '#ffb300');
-      // Highlight
-      drawPixelCircle(sun.x - 8, sun.y - 8, sun.radius * 0.5, '#fff8b0');
+      if (!sunCache) return;
+      const { offscreen, size } = sunCache;
+      ctx.drawImage(offscreen, sun.x - size / 2, sun.y - size / 2);
     };
 
     // ===== Draw 3D Cloud =====
     const drawCloud = (cloud) => {
       ctx.fillStyle = 'rgba(255,255,255,0.95)';
-
       const { x, y, size } = cloud;
 
       ctx.beginPath();
@@ -83,21 +117,14 @@ export default function DaylightBackground() {
       ctx.arc(x + size * 0.5, y + size * 0.3, size * 0.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // subtle bottom shadow (depth)
+      // Subtle bottom shadow
       ctx.fillStyle = 'rgba(0,0,0,0.05)';
       ctx.beginPath();
-      ctx.ellipse(
-        x + size * 0.5,
-        y + size * 0.5,
-        size * 0.9,
-        size * 0.25,
-        0,
-        0,
-        Math.PI * 2
-      );
+      ctx.ellipse(x + size * 0.5, y + size * 0.5, size * 0.9, size * 0.25, 0, 0, Math.PI * 2);
       ctx.fill();
     };
-    // rocket (pointing RIGHT) 
+
+    // ===== Rocket =====
     const drawRocket = () => {
       const u = 5;
       const flicker = Math.random() > 0.4;
@@ -131,17 +158,13 @@ export default function DaylightBackground() {
       ctx.fillStyle = '#AAAAB8';
       ctx.fillRect(-u * 5, -u * 2, u * 1.5, u * 4);
     };
+
     const rkt = {
-      x: 0,
-      y: 0,
-      angle: 0,       // current heading (radians)
-      speed: 2.4,     // px per frame
-      mode: 'cruise',// 'cruise' | 'loop' | 'wait'
-      loopTurned: 0,    // how many radians turned so far in loop
-      loopDir: 1,    // +1 clockwise, -1 counter-clockwise
-      turnRate: 0.045,// radians per frame during loop
-      cruiseTimer: 0,   // frames until next loop
-      waitTimer: 0,    // frames to wait off-screen before reappearing
+      x: 0, y: 0, angle: 0,
+      speed: 2.4,
+      mode: 'cruise',
+      loopTurned: 0, loopDir: 1, turnRate: 0.045,
+      cruiseTimer: 0, waitTimer: 0,
     };
 
     const randomCruiseTime = () => 180 + Math.floor(Math.random() * 180);
@@ -149,18 +172,17 @@ export default function DaylightBackground() {
     const spawnRocket = () => {
       const W = canvas.width;
       const H = canvas.height;
-      // Pick a random edge to spawn from
       const edge = Math.floor(Math.random() * 4);
-      if (edge === 0) { // left
+      if (edge === 0) {
         rkt.x = -60; rkt.y = H * (0.1 + Math.random() * 0.7);
-        rkt.angle = (Math.random() - 0.5) * 0.5; // mostly rightward
-      } else if (edge === 1) { // right
+        rkt.angle = (Math.random() - 0.5) * 0.5;
+      } else if (edge === 1) {
         rkt.x = W + 60; rkt.y = H * (0.1 + Math.random() * 0.7);
         rkt.angle = Math.PI + (Math.random() - 0.5) * 0.5;
-      } else if (edge === 2) { // top
+      } else if (edge === 2) {
         rkt.x = W * (0.1 + Math.random() * 0.8); rkt.y = -60;
         rkt.angle = Math.PI * 0.5 + (Math.random() - 0.5) * 0.5;
-      } else { // bottom
+      } else {
         rkt.x = W * (0.1 + Math.random() * 0.8); rkt.y = H + 60;
         rkt.angle = -Math.PI * 0.5 + (Math.random() - 0.5) * 0.5;
       }
@@ -176,45 +198,39 @@ export default function DaylightBackground() {
         if (rkt.waitTimer <= 0) spawnRocket();
         return;
       }
-
       if (rkt.mode === 'cruise') {
-        // Fly straight-ish
         rkt.x += Math.cos(rkt.angle) * rkt.speed;
         rkt.y += Math.sin(rkt.angle) * rkt.speed;
         rkt.cruiseTimer--;
-
         if (rkt.cruiseTimer <= 0) {
-          // Kick off a loop — pick clockwise or counter randomly
           rkt.mode = 'loop';
           rkt.loopTurned = 0;
           rkt.loopDir = Math.random() > 0.5 ? 1 : -1;
         }
-
-        // If drifted off-screen, reset after a pause
         const pad = 150;
         if (rkt.x < -pad || rkt.x > canvas.width + pad ||
           rkt.y < -pad || rkt.y > canvas.height + pad) {
           rkt.mode = 'wait';
           rkt.waitTimer = 140 + Math.floor(Math.random() * 160);
         }
-
       } else if (rkt.mode === 'loop') {
-        // Turn continuously — this IS the loop
         rkt.angle += rkt.loopDir * rkt.turnRate;
         rkt.loopTurned += rkt.turnRate;
         rkt.x += Math.cos(rkt.angle) * rkt.speed;
         rkt.y += Math.sin(rkt.angle) * rkt.speed;
-
-        // Full circle done → back to cruise
         if (rkt.loopTurned >= Math.PI * 2) {
           rkt.mode = 'cruise';
           rkt.cruiseTimer = randomCruiseTime();
         }
       }
     };
+
     // ── Smoke trail ───────────────────────────────────────────────────────────
     const trail = [];
+
     const addSmoke = (x, y, angle) => {
+      // Cap trail length on mobile to prevent unbounded array growth
+      if (isMobile() && trail.length > 15) return;
       trail.push({
         x: x - Math.cos(angle) * 30 + (Math.random() - 0.5) * 6,
         y: y - Math.sin(angle) * 30 + (Math.random() - 0.5) * 6,
@@ -225,27 +241,44 @@ export default function DaylightBackground() {
         vy: -0.3 - Math.random() * 0.3,
       });
     };
+
     const drawSmoke = () => {
       for (let i = trail.length - 1; i >= 0; i--) {
         const p = trail[i];
         p.x += p.vx; p.y += p.vy; p.r += 0.15; p.life -= p.decay;
         if (p.life <= 0) { trail.splice(i, 1); continue; }
         ctx.fillStyle = `rgba(200,210,230,${0.32 * p.life})`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
       }
     };
-    // ===== Animation =====
-    const animate = () => {
+
+    // ===== Animation Loop (throttled to 30fps on mobile) =====================
+    //
+    // FIX: Previously ran at full 60fps on all devices. Now we check elapsed
+    // time and skip frames on mobile to halve CPU usage.
+    //
+    const animate = (timestamp) => {
+      // Throttle: skip frame if not enough time has passed
+      if (timestamp - lastTime < FRAME_MS()) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+      lastTime = timestamp;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Sky gradient
       const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
-sky.addColorStop(0, '#62c1e5');  // deeper mid-sky blue
-sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
+      sky.addColorStop(0, '#62c1e5');
+      sky.addColorStop(1, '#cfecf7');
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Draw pre-rendered sun (1 drawImage instead of 1,712 fillRects)
       drawSun();
+
       updateRocket();
 
       if (rkt.mode !== 'wait') {
@@ -257,13 +290,10 @@ sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
         drawRocket();
         ctx.restore();
       }
-      // Move & draw clouds
+
       clouds.forEach((cloud) => {
         cloud.offset += cloud.speed;
-
-        // ←→ movement within ~40px range
         cloud.x = cloud.baseX + Math.sin(cloud.offset) * 20;
-
         drawCloud(cloud);
       });
 
@@ -273,13 +303,16 @@ sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
     // ===== Resize =====
     const handleResize = () => {
       setCanvasSize();
+      // Rebuild sun cache at new sun position after resize
+      sunCache = buildSunCache();
       createClouds();
     };
 
     // ===== Init =====
     setCanvasSize();
+    sunCache = buildSunCache(); // ← build once
     createClouds();
-    animate();
+    animationFrameId = requestAnimationFrame(animate);
 
     window.addEventListener('resize', handleResize);
 
@@ -288,7 +321,6 @@ sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
 
   return (
     <canvas
@@ -300,9 +332,9 @@ sky.addColorStop(1, '#cfecf7');  // deeper horizon blue
         width: '100%',
         height: '100%',
         zIndex: -1,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        willChange: 'transform', // hints GPU to isolate this layer
       }}
     />
   );
-};
-
+}
