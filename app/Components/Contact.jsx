@@ -377,7 +377,7 @@ export default function Contact() {
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-3xl md:text-5xl font-black tracking-[0.25em] mb-4">
+          <p className="text-2xl md:text-4xl font-black tracking-[0.25em] mb-4">
             ▸ OPEN <span className="text-orange-500">CHANNEL</span>
           </p>
           <p className="font-mono text-[0.8rem] text-[#2a2a3e] tracking-[0.2em] uppercase">
@@ -472,7 +472,7 @@ export default function Contact() {
                     disabled={loading}
                     whileTap={{ scale: 0.98 }}
                     className={`w-full py-4 rounded-md font-mono font-black text-[0.85rem] tracking-[0.25em] uppercase transition-all relative overflow-hidden
-                      ${loading ? 'bg-[#1a1a28] text-gray-700 cursor-not-allowed' : 'bg-gradient-to-br from-orange-500 to-orange-700 text-black hover:brightness-110'}`}
+                      ${loading ? 'bg-[#1a1a28] text-gray-500 cursor-not-allowed' : 'bg-gradient-to-br from-orange-500 to-orange-700 text-black hover:brightness-110'}`}
                   >
                     {!loading && (
                       <motion.div

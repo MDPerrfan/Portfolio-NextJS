@@ -7,6 +7,7 @@ import {
   SiTailwindcss, SiFirebase, SiExpress, SiNextdotjs,
   SiMongodb, SiPostman, SiJsonwebtokens, SiVercel,
   SiNetlify, SiRender, SiGithubcopilot, SiCloudinary,
+  SiApifox,
 } from "react-icons/si";
 import {
   DiJavascript1, DiReact, DiNodejs, DiCss3Full,
@@ -49,6 +50,7 @@ const CATEGORIES = [
       { icon: <SiJsonwebtokens />, name: "JWT Auth", xp: 75, ring: 1 },
       { icon: <SiCloudinary />, name: "Cloudinary", xp: 80, ring: 2 },
       { icon: <SiFirebase />, name: "Firebase", xp: 60, ring: 2 },
+      { icon: <SiApifox />, name: "RestApi's", xp: 90, ring: 0 }
     ],
   },
   {
