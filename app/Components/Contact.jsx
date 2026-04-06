@@ -368,22 +368,20 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="w-full px-4 md:px-8 py-24 flex flex-col items-center">
-      <div className="w-full max-w-6xl flex flex-col gap-16">
+    <section id="contact" ref={sectionRef} className="w-full px-4 md:px-8 py-10 flex flex-col items-center">
+      <div className="w-full max-w-6xl flex flex-col gap-5">
         
-        <motion.div
+        <div
           className="text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-2xl md:text-4xl font-black tracking-[0.25em] mb-4">
+          <p className="text-2xl md:text-4xl font-black tracking-[0.25em] mb-8">
             ▸ OPEN <span className="text-orange-500">CHANNEL</span>
           </p>
-          <p className="font-mono text-[0.8rem] text-[#2a2a3e] tracking-[0.2em] uppercase">
-            ESTABLISH CONNECTION · SEND TRANSMISSION · AWAIT RESPONSE
-          </p>
-        </motion.div>
+  
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}

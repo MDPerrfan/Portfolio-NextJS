@@ -565,9 +565,9 @@ export default function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="w-full px-4 md:px-8 py-20 flex flex-col items-center"
+      className="w-full px-4 md:px-8 py-10 flex flex-col items-center"
     >
-      <div className="w-full max-w-6xl flex flex-col items-center gap-20">
+      <div className="w-full max-w-6xl flex flex-col items-center gap-5">
 
         {/* Heading */}
         <motion.div
@@ -576,11 +576,8 @@ export default function Skills() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-2xl md:text-4xl font-extrabold tracking-widest mb-2">
+          <p className="text-2xl md:text-4xl font-extrabold tracking-widest mb-1">
             ▸ TECH <span className="text-orange-500">STACK</span>
-          </p>
-          <p className="text-gray-600 text-xs tracking-[0.2em] uppercase">
-            Hover nodes · Select category · Explore skills
           </p>
         </motion.div>
 
@@ -591,7 +588,7 @@ export default function Skills() {
           <motion.div
             onMouseEnter={() => setPaused(true)}   // pause on hover
             onMouseLeave={() => setPaused(false)}  // resume
-            className="relative flex-shrink-0 rounded-lg overflow-hidden"
+            className="hidden md:block relative flex-shrink-0 rounded-lg overflow-hidden"
             style={{
               width: "100%",
               maxWidth: 660,
@@ -617,7 +614,7 @@ export default function Skills() {
           {/* Detail panel */}
           <div className="flex-1 flex flex-col gap-6 min-w-0">
 
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 items-center justify-center">
               {CATEGORIES.map((cat, i) => (
                 <CategoryTab
                   key={cat.id}
@@ -672,21 +669,19 @@ export default function Skills() {
         </div>
         {/* GitHub Calendar */}
         <div className="w-full flex flex-col items-center gap-6">
-          <motion.div
+          <div
             className="text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <p className="text-2xl md:text-4xl font-extrabold tracking-widest mb-2">
-              ▸ GITHUB <span className="text-orange-500">ACTIVITY</span>
+            <p className="text-md md:text-xl font-extrabold tracking-widest ">
+               GITHUB <span className="text-orange-500">ACTIVITY</span>
             </p>
-            <p className="text-gray-600 text-xs tracking-[0.2em] uppercase">
-              Daily commits · Streak counter · Contribution map
-            </p>
-          </motion.div>
 
-          <motion.div
+          </div>
+
+          <div
             className="w-full rounded-lg p-6 overflow-x-auto flex justify-center"
             style={{
               background: "#050510",
@@ -722,7 +717,7 @@ export default function Skills() {
                 />
               )}
             </div>
-          </motion.div>
+          </div>
         </div>
 
       </div>

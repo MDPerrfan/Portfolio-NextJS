@@ -40,7 +40,7 @@ export const metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/favicon.svg",
         width: 1200,
         height: 630,
         alt: "Parves — Full Stack Developer Portfolio",
@@ -51,7 +51,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Parves | Full Stack Developer",
     description: "Full Stack MERN Developer from Chittagong, Bangladesh.",
-    images: ["/og-image.jpg"],
+    images: ["/favicon.svg"],
     creator: "@mdperrfan", // ← add your twitter handle if you have one
   },
   alternates: {

@@ -334,29 +334,21 @@ export default function Services() {
     <section
       id="services"
       ref={sectionRef}
-      className="w-full px-4 md:px-8 py-20 flex justify-center"
+      className="w-full px-4 md:px-8 py-10 flex justify-center"
     >
-      <div className="w-full max-w-6xl flex flex-col gap-14">
+      <div className="w-full max-w-6xl flex flex-col gap-5">
 
         {/* ── Heading ── */}
-        <motion.div
+        <div
           className="flex flex-col gap-3"
           initial={{ opacity: 0, y: -20 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-2xl md:text-4xl font-extrabold tracking-widest text-center">
+          <p className="text-2xl md:text-4xl font-extrabold tracking-widest text-center mb-8">
             ▸ WHAT I <span className="text-orange-500">BUILD</span>
           </p>
-
-          {/* Terminal prompt */}
-          <div className="flex items-center justify-center gap-2 font-mono text-[0.79rem] text-[#333]">
-            <span className="text-[#4ade80]">~/portfolio</span>
-            <span className="text-[#555]">$</span>
-            <span className="text-[#888]">ls services/</span>
-            <Cursor />
-          </div>
-        </motion.div>
+        </div>
 
         {/* ── Main panel ── */}
         <motion.div
