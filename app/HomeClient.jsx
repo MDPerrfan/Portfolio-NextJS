@@ -107,7 +107,18 @@ export default function HomeClient({ projects, about }) {
       },
     });
   }, { scope: mainContainer, dependencies: [siteVisible] });
+useEffect(() => {
+  console.log("Mounted");
 
+  const interval = setInterval(() => {
+    console.log("Still alive");
+  }, 5000);
+
+  return () => {
+    console.log("Unmounted");
+    clearInterval(interval);
+  };
+}, []);
   return (
     <>
       {loading && <PageLoader onComplete={handleLoaderComplete} />}
@@ -124,7 +135,7 @@ export default function HomeClient({ projects, about }) {
             : <DaylightBackground />
         )}
         <ThemeToggle />
-        {wave >= 1 && <Navbar />}
+        {/* {wave >= 1 && <Navbar />} */}
 
         {/* Wave 2 — above the fold */}
         {wave >= 2 && <Hero />}
