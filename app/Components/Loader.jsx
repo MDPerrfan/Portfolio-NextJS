@@ -7,15 +7,12 @@ export default function Loader({ onComplete }) {
   const hasRevealed = useRef(false);
 
   useEffect(() => {
-    // Faster interval (15ms vs 25ms) + accelerating increments
-    // so it feels snappy early and dramatic at the end
     const count = setInterval(() => {
       setCounter((c) => {
         if (c >= 100) {
           clearInterval(count);
           return 100;
         }
-        // Accelerate: bigger jumps early, slow near 100 for suspense
         const increment = c < 50 ? 3 : c < 80 ? 2 : 1;
         return Math.min(c + increment, 100);
       });

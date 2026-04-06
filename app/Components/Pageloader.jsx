@@ -71,12 +71,10 @@ function PixelCloud({ style }) {
 // ─── Boot messages ────────────────────────────────────────────────────────────
 
 const BOOT_STEPS = [
-  { text: "INITIALIZING PARVES.EXE...",      pct: 10 },
-  { text: "LOADING SKILL TREE...",            pct: 25 },
-  { text: "SPAWNING PROJECTS...",             pct: 42 },
-  { text: "EQUIPPING MERN STACK...",          pct: 58 },
-  { text: "CONNECTING TO GITHUB...",          pct: 72 },
-  { text: "CALIBRATING PIXEL ENGINE...",      pct: 85 },
+  { text: "INITIALIZING PARVES.EXE...",      pct: 30 },
+  { text: "LOADING SKILL TREE...",            pct: 45 },
+  { text: "SPAWNING PROJECTS...",             pct: 62 },
+  { text: "CALIBRATING PIXEL ENGINE...",      pct: 75 },
   { text: "ALL SYSTEMS GO ✓",                 pct: 100 },
 ];
 
@@ -110,25 +108,24 @@ export default function PageLoader({ onComplete }) {
   const [blinkOn, setBlinkOn]       = useState(true);
 
   // Step through boot messages
-  useEffect(() => {
-    if (stepIdx >= BOOT_STEPS.length) return;
-    const delay = stepIdx === 0 ? 400 : 480;
-    const t = setTimeout(() => {
-      setProgress(BOOT_STEPS[stepIdx].pct / 100);
-      setCoins((c) => c + 3);
-      if (stepIdx < BOOT_STEPS.length - 1) {
-        setStepIdx((i) => i + 1);
-      } else {
-        // all done
-        setTimeout(() => setShowReady(true), 400);
-        setTimeout(() => {
-          setVisible(false);
-          setTimeout(onComplete, 600);
-        }, 1800);
-      }
-    }, delay);
-    return () => clearTimeout(t);
-  }, [stepIdx]);
+useEffect(() => {
+  const handleLoad = () => {
+    setProgress(1);
+    setShowReady(true);
+
+    setTimeout(() => {
+      setVisible(false);
+      setTimeout(onComplete, 300);
+    }, 500);
+  };
+
+  if (document.readyState === "complete") {
+    handleLoad();
+  } else {
+    window.addEventListener("load", handleLoad);
+    return () => window.removeEventListener("load", handleLoad);
+  }
+}, []);
 
   // Blink cursor
   useEffect(() => {
